@@ -1,0 +1,6 @@
+{
+    "HubSpot": {
+        "PortalId": "<secret>",
+        "ApiKey": "<secret>"
+    }
+}
