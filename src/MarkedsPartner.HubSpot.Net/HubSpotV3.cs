@@ -10,11 +10,11 @@ namespace MarkedsPartner.HubSpot.Net
 {
     using System = global::System;
     
-    public partial class ObjectsClient 
+    public partial class V3Client 
     {
         private readonly string apiKey;
 
-        public ObjectsClient(HttpClient httpClient, string apiKey)
+        public V3Client(HttpClient httpClient, string apiKey)
             : this(httpClient)
         {
             this.apiKey = apiKey;

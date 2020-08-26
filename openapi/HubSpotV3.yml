@@ -13,21 +13,22 @@ security:
     - contacts
 
 paths:
-  /crm/v3/objects/companies:
+  /crm/v3/objects/{objectType}:
     get:
-      summary: Returns a list of companies
+      summary: Returns a list of objects
       parameters:
+        - $ref: '#/components/parameters/objectType'
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/after'
         - $ref: '#/components/parameters/properties'
         - $ref: '#/components/parameters/archived'
       responses:
         '200':
-          description: An object with an array of companies and paging instructions
+          description: An object with a result array of objects and paging instructions
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CompaniesResponse'
+                $ref: '#/components/schemas/ListResponse'
         'default':
           description: API call failed
           content:
@@ -35,62 +36,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /crm/v3/objects/companies/{companyId}:
+  /crm/v3/objects/{objectType}/{objectId}:
     get:
       summary: |
-        Read an Object identified by {companyId}. {companyId} refers
+        Read an Object identified by {objectId}. {objectId} refers
         to the internal object ID by default, or optionally any unique property
         value as specified by the idProperty query param.
         Control what is returned via the properties query param.
       parameters:
-        - name: companyId
-          in: path
-          required: true
-          schema: 
-            type: string
-        - name: associations
-          description: A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.
-          in: query
-          required: false
-          schema: 
-            type: string
-        - name: idProperty
-          description: The name of a property whose values are unique for this object type
-          in: query
-          required: false
-          schema: 
-            type: string
+        - $ref: '#/components/parameters/objectType'
+        - $ref: '#/components/parameters/objectId'
         - $ref: '#/components/parameters/properties'
+        - $ref: '#/components/parameters/associations'
         - $ref: '#/components/parameters/archived'
+        - $ref: '#/components/parameters/idProperty'
       responses:
         '200':
           description: A company
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Company'
-        'default':
-          description: API call failed
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/Error'
-                
-  /crm/v3/objects/contacts:
-    get:
-      summary: Returns a list of contacts
-      parameters:
-        - $ref: '#/components/parameters/limit'
-        - $ref: '#/components/parameters/after'
-        - $ref: '#/components/parameters/properties'
-        - $ref: '#/components/parameters/archived'
-      responses:
-        '200':
-          description: An object with an array of contacts and paging instructions
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ContactsResponse'
+                $ref: '#/components/schemas/CrmObject'
         'default':
           description: API call failed
           content:
@@ -117,6 +83,13 @@ components:
             contacts: Read and modify contacts
 
   parameters:
+    objectType:
+      name: objectType
+      description: The object type to work with
+      in: path
+      required: true
+      schema:
+        type: string
     limit:
       name: limit
       description: The maximum number of results to display per page.
@@ -146,10 +119,30 @@ components:
       required: false
       schema:
         type: boolean
+    objectId:
+      name: objectId
+      in: path
+      required: true
+      schema: 
+        type: string
+    associations:
+      name: associations
+      description: A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.
+      in: query
+      required: false
+      schema: 
+        type: string
+    idProperty:
+      name: idProperty
+      description: The name of a property whose values are unique for this object type
+      in: query
+      required: false
+      schema: 
+        type: string
 
   schemas:
 
-    Company:
+    CrmObject:
       type: object
       properties:
         createdAt:
@@ -167,41 +160,13 @@ components:
           additionalProperties: 
             type: string
 
-    CompaniesResponse:
+    ListResponse:
       type: object
       properties:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Company'
-        paging:
-          $ref: '#/components/schemas/Paging'
-
-    Contact:
-      type: object
-      properties:
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        archived:
-          type: boolean
-        id:
-          type: string
-        properties:
-          type: object
-          additionalProperties: 
-            type: string
-
-    ContactsResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Contact'
+            $ref: '#/components/schemas/CrmObject'
         paging:
           $ref: '#/components/schemas/Paging'
 

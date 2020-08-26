@@ -12,7 +12,7 @@ namespace MarkedsPartner.HubSpot.Net.Tests
             return JsonConvert.SerializeObject(obj, indent ? Formatting.Indented : Formatting.None);
         }
 
-        public static void Dump(this ICollection<Company> obj)
+        public static void Dump(this object obj)
         {
             Console.WriteLine(obj.ToJson(true));
         }

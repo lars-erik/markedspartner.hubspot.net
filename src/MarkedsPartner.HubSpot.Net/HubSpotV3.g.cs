@@ -15,13 +15,13 @@ namespace MarkedsPartner.HubSpot.Net
     using System = global::System;
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.7.0.0 (NJsonSchema v10.1.24.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class ObjectsClient 
+    public partial class V3Client 
     {
         private string _baseUrl = "https://api.hubspot.com";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public ObjectsClient(System.Net.Http.HttpClient httpClient)
+        public V3Client(System.Net.Http.HttpClient httpClient)
         {
             _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
@@ -49,17 +49,22 @@ namespace MarkedsPartner.HubSpot.Net
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Returns a list of companies</summary>
+        /// <summary>Returns a list of objects</summary>
+        /// <param name="objectType">The object type to work with</param>
         /// <param name="limit">The maximum number of results to display per page.</param>
         /// <param name="after">The paging cursor token of the last successfully read resource will be returned as the paging.next.after JSON property of a paged response containing more results.</param>
         /// <param name="properties">A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.</param>
         /// <param name="archived">Whether to return only results that have been archived.</param>
-        /// <returns>An object with an array of companies and paging instructions</returns>
+        /// <returns>An object with a result array of objects and paging instructions</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<CompaniesResponse> CompaniesGetAsync(long? limit = null, string after = null, string properties = null, bool? archived = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ListResponse> ObjectsGetAsync(string objectType, long? limit = null, string after = null, string properties = null, bool? archived = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
+            if (objectType == null)
+                throw new System.ArgumentNullException("objectType");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/crm/v3/objects/companies?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/crm/v3/objects/{objectType}?");
+            urlBuilder_.Replace("{objectType}", System.Uri.EscapeDataString(ConvertToString(objectType, System.Globalization.CultureInfo.InvariantCulture)));
             if (limit != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("limit") + "=").Append(System.Uri.EscapeDataString(ConvertToString(limit, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -106,7 +111,7 @@ namespace MarkedsPartner.HubSpot.Net
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<CompaniesResponse>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ListResponse>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -136,40 +141,45 @@ namespace MarkedsPartner.HubSpot.Net
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Read an Object identified by {companyId}. {companyId} refers
+        /// <summary>Read an Object identified by {objectId}. {objectId} refers
         /// to the internal object ID by default, or optionally any unique property
         /// value as specified by the idProperty query param.
         /// Control what is returned via the properties query param.</summary>
-        /// <param name="associations">A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.</param>
-        /// <param name="idProperty">The name of a property whose values are unique for this object type</param>
+        /// <param name="objectType">The object type to work with</param>
         /// <param name="properties">A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.</param>
+        /// <param name="associations">A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.</param>
         /// <param name="archived">Whether to return only results that have been archived.</param>
+        /// <param name="idProperty">The name of a property whose values are unique for this object type</param>
         /// <returns>A company</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Company> CompaniesGetAsync(string companyId, string associations = null, string idProperty = null, string properties = null, bool? archived = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<CrmObject> ObjectsGetAsync(string objectType, string objectId, string properties = null, string associations = null, bool? archived = null, string idProperty = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            if (companyId == null)
-                throw new System.ArgumentNullException("companyId");
+            if (objectType == null)
+                throw new System.ArgumentNullException("objectType");
+    
+            if (objectId == null)
+                throw new System.ArgumentNullException("objectId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/crm/v3/objects/companies/{companyId}?");
-            urlBuilder_.Replace("{companyId}", System.Uri.EscapeDataString(ConvertToString(companyId, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/crm/v3/objects/{objectType}/{objectId}?");
+            urlBuilder_.Replace("{objectType}", System.Uri.EscapeDataString(ConvertToString(objectType, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{objectId}", System.Uri.EscapeDataString(ConvertToString(objectId, System.Globalization.CultureInfo.InvariantCulture)));
+            if (properties != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("properties") + "=").Append(System.Uri.EscapeDataString(ConvertToString(properties, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
             if (associations != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("associations") + "=").Append(System.Uri.EscapeDataString(ConvertToString(associations, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (archived != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("archived") + "=").Append(System.Uri.EscapeDataString(ConvertToString(archived, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (idProperty != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("idProperty") + "=").Append(System.Uri.EscapeDataString(ConvertToString(idProperty, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (properties != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("properties") + "=").Append(System.Uri.EscapeDataString(ConvertToString(properties, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (archived != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("archived") + "=").Append(System.Uri.EscapeDataString(ConvertToString(archived, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
@@ -200,94 +210,7 @@ namespace MarkedsPartner.HubSpot.Net
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<Company>(response_, headers_).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<Error>(response_, headers_).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new ApiException<Error>("API call failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (response_ != null)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-            }
-        }
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Returns a list of contacts</summary>
-        /// <param name="limit">The maximum number of results to display per page.</param>
-        /// <param name="after">The paging cursor token of the last successfully read resource will be returned as the paging.next.after JSON property of a paged response containing more results.</param>
-        /// <param name="properties">A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.</param>
-        /// <param name="archived">Whether to return only results that have been archived.</param>
-        /// <returns>An object with an array of contacts and paging instructions</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ContactsResponse> ContactsAsync(long? limit = null, string after = null, string properties = null, bool? archived = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/crm/v3/objects/contacts?");
-            if (limit != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("limit") + "=").Append(System.Uri.EscapeDataString(ConvertToString(limit, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (after != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("after") + "=").Append(System.Uri.EscapeDataString(ConvertToString(after, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (properties != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("properties") + "=").Append(System.Uri.EscapeDataString(ConvertToString(properties, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (archived != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("archived") + "=").Append(System.Uri.EscapeDataString(ConvertToString(archived, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            urlBuilder_.Length--;
-    
-            var client_ = _httpClient;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ContactsResponse>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<CrmObject>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -419,7 +342,7 @@ namespace MarkedsPartner.HubSpot.Net
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Company 
+    public partial class CrmObject 
     {
         [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset CreatedAt { get; set; }
@@ -449,61 +372,10 @@ namespace MarkedsPartner.HubSpot.Net
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class CompaniesResponse 
+    public partial class ListResponse 
     {
         [Newtonsoft.Json.JsonProperty("results", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<Company> Results { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("paging", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Paging Paging { get; set; }
-    
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
-    
-        [Newtonsoft.Json.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties; }
-            set { _additionalProperties = value; }
-        }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Contact 
-    {
-        [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset CreatedAt { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("updatedAt", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset UpdatedAt { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("archived", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool Archived { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Id { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IDictionary<string, string> Properties { get; set; }
-    
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
-    
-        [Newtonsoft.Json.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties; }
-            set { _additionalProperties = value; }
-        }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class ContactsResponse 
-    {
-        [Newtonsoft.Json.JsonProperty("results", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<Contact> Results { get; set; }
+        public System.Collections.Generic.ICollection<CrmObject> Results { get; set; }
     
         [Newtonsoft.Json.JsonProperty("paging", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Paging Paging { get; set; }

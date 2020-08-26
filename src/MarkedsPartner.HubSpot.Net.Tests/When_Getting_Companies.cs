@@ -23,8 +23,8 @@ namespace MarkedsPartner.HubSpot.Net.Tests
         [Test]
         public async Task Returns_Page_With_Limited_Results()
         {
-            var client = new ObjectsClient(new HttpClient(), config.ApiKey);
-            var response = await client.CompaniesGetAsync(limit: 2);
+            var client = new V3Client(new HttpClient(), config.ApiKey);
+            var response = await client.ObjectsGetAsync("companies", limit: 2);
 
             response.Results.Dump();
             
