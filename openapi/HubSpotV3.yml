@@ -159,6 +159,26 @@ components:
           type: object
           additionalProperties: 
             type: string
+        associations:
+          type: object
+          additionalProperties: 
+            $ref: '#/components/schemas/AssociationList'
+
+    AssociationList:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+
+    Association:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
 
     ListResponse:
       type: object

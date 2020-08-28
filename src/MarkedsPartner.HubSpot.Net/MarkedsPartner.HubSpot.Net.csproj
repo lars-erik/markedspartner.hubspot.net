@@ -1,7 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+      <PackageId>MarkedsPartner.HubSpot.Net</PackageId>
+      <Version>0.1.2</Version>
+      <Authors>Lars-Erik Aabech</Authors>
+      <Company>MarkedsPartner AS</Company>
+      <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
