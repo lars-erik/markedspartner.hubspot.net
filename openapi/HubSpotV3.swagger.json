@@ -1,0 +1,620 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "HubSpot API",
+    "version": "3.0.0"
+  },
+  "host": "api.hubspot.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/crm/v3/objects/{objectType}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The object type to work with",
+            "in": "path",
+            "name": "objectType",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The maximum number of results to display per page.",
+            "format": "int64",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "description": "The paging cursor token of the last successfully read resource will be returned as the paging.next.after JSON property of a paged response containing more results.",
+            "in": "query",
+            "name": "after",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.",
+            "in": "query",
+            "name": "properties",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "Whether to return only results that have been archived.",
+            "in": "query",
+            "name": "archived",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An object with a result array of objects and paging instructions",
+            "schema": {
+              "$ref": "#/definitions/ListResponse"
+            }
+          },
+          "default": {
+            "description": "API call failed",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "operationId": "ListObjects",
+        "summary": "Returns a list of objects"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The object type to work with",
+            "in": "path",
+            "name": "objectType",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/PropertiesObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An object with the id and properties of the created object",
+            "schema": {
+              "$ref": "#/definitions/ObjectOperationResponse"
+            }
+          },
+          "default": {
+            "description": "API call failed",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "operationId": "CreateObject",
+        "summary": "Creates an object of the given type"
+      }
+    },
+    "/crm/v3/objects/{objectType}/search": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The object type to work with",
+            "in": "path",
+            "name": "objectType",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The maximum number of results to display per page.",
+            "format": "int64",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "description": "The paging cursor token of the last successfully read resource will be returned as the paging.next.after JSON property of a paged response containing more results.",
+            "in": "query",
+            "name": "after",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/SearchRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search results",
+            "schema": {
+              "$ref": "#/definitions/ListResponse"
+            }
+          },
+          "default": {
+            "description": "API call failed",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "operationId": "SearchObjects",
+        "summary": "Filter, sort, and search CRM objects\n"
+      }
+    },
+    "/crm/v3/objects/{objectType}/{objectId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The object type to work with",
+            "in": "path",
+            "name": "objectType",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "objectId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.",
+            "in": "query",
+            "name": "properties",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.",
+            "in": "query",
+            "name": "associations",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "Whether to return only results that have been archived.",
+            "in": "query",
+            "name": "archived",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "description": "The name of a property whose values are unique for this object type",
+            "in": "query",
+            "name": "idProperty",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A company",
+            "schema": {
+              "$ref": "#/definitions/CrmObject"
+            }
+          },
+          "default": {
+            "description": "API call failed",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "operationId": "GetObject",
+        "summary": "Read an Object identified by {objectId}. {objectId} refers\nto the internal object ID by default, or optionally any unique property\nvalue as specified by the idProperty query param.\nControl what is returned via the properties query param.\n"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The object type to work with",
+            "in": "path",
+            "name": "objectType",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "objectId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/PropertiesObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An object with the id and properties of the created object",
+            "schema": {
+              "$ref": "#/definitions/ObjectOperationResponse"
+            }
+          },
+          "default": {
+            "description": "API call failed",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "operationId": "UpdateObject",
+        "summary": "Updates the object of the given type and the given id"
+      }
+    }
+  },
+  "definitions": {
+    "Association": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "AssociationList": {
+      "properties": {
+        "results": {
+          "items": {
+            "$ref": "#/definitions/Association"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "CrmObject": {
+      "properties": {
+        "archived": {
+          "type": "boolean"
+        },
+        "associations": {
+          "additionalProperties": {
+            "$ref": "#/definitions/AssociationList"
+          },
+          "type": "object"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "properties": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "updatedAt": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Error": {
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "correlationId": {
+          "type": "string"
+        },
+        "errors": {
+          "items": {
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "context": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "in": {
+                "type": "string"
+              },
+              "links": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "message": {
+                "type": "string"
+              },
+              "subCategory": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ListResponse": {
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/Paging"
+        },
+        "results": {
+          "items": {
+            "$ref": "#/definitions/CrmObject"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ObjectOperationResponse": {
+      "properties": {
+        "archived": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "properties": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "updatedAt": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Paging": {
+      "properties": {
+        "next": {
+          "properties": {
+            "after": {
+              "type": "string"
+            },
+            "link": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "PropertiesObject": {
+      "properties": {
+        "properties": {
+          "additionalProperties": {
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "SearchFilter": {
+      "properties": {
+        "operator": {
+          "type": "string"
+        },
+        "propertyName": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "SearchFilterGroups": {
+      "items": {
+        "properties": {
+          "filters": {
+            "$ref": "#/definitions/SearchFilters"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "SearchFilters": {
+      "items": {
+        "$ref": "#/definitions/SearchFilter"
+      },
+      "type": "array"
+    },
+    "SearchOrder": {
+      "items": {
+        "properties": {
+          "direction": {
+            "type": "string"
+          },
+          "propertyName": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "SearchRequest": {
+      "properties": {
+        "after": {
+          "type": "integer"
+        },
+        "filterGroups": {
+          "$ref": "#/definitions/SearchFilterGroups"
+        },
+        "filters": {
+          "$ref": "#/definitions/SearchFilters"
+        },
+        "limit": {
+          "type": "integer"
+        },
+        "properties": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "query": {
+          "type": "string"
+        },
+        "sorts": {
+          "$ref": "#/definitions/SearchOrder"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "ApiKeyAuth": {
+      "in": "query",
+      "name": "hapikey",
+      "type": "apiKey"
+    },
+    "OAuth2": {
+      "authorizationUrl": "https://api.hubspot.com/oauth/authorize",
+      "flow": "accessCode",
+      "scopes": {
+        "contacts": "Read and modify contacts",
+        "oauth": "Authenticate"
+      },
+      "tokenUrl": "https://api.hubspot.com/oauth/v1/token",
+      "type": "oauth2"
+    }
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    },
+    {
+      "OAuth2": [
+        "oauth",
+        "contacts"
+      ]
+    }
+  ],
+  "x-components": {
+    "parameters": {
+      "after": {
+        "description": "The paging cursor token of the last successfully read resource will be returned as the paging.next.after JSON property of a paged response containing more results.",
+        "in": "query",
+        "name": "after",
+        "required": false,
+        "type": "string"
+      },
+      "archived": {
+        "description": "Whether to return only results that have been archived.",
+        "in": "query",
+        "name": "archived",
+        "required": false,
+        "type": "boolean"
+      },
+      "associations": {
+        "description": "A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.",
+        "in": "query",
+        "name": "associations",
+        "required": false,
+        "type": "string"
+      },
+      "idProperty": {
+        "description": "The name of a property whose values are unique for this object type",
+        "in": "query",
+        "name": "idProperty",
+        "required": false,
+        "type": "string"
+      },
+      "limit": {
+        "description": "The maximum number of results to display per page.",
+        "format": "int64",
+        "in": "query",
+        "name": "limit",
+        "required": false,
+        "type": "integer"
+      },
+      "objectId": {
+        "in": "path",
+        "name": "objectId",
+        "required": true,
+        "type": "string"
+      },
+      "objectType": {
+        "description": "The object type to work with",
+        "in": "path",
+        "name": "objectType",
+        "required": true,
+        "type": "string"
+      },
+      "properties": {
+        "description": "A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.",
+        "in": "query",
+        "name": "properties",
+        "required": false,
+        "type": "string"
+      }
+    }
+  }
+}

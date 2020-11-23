@@ -15,6 +15,7 @@ security:
 paths:
   /crm/v3/objects/{objectType}:
     get:
+      operationId: ListObjects
       summary: Returns a list of objects
       parameters:
         - $ref: '#/components/parameters/objectType'
@@ -35,9 +36,33 @@ paths:
             'application/json':
               schema:
                 $ref: '#/components/schemas/Error'
+    post:
+      operationId: CreateObject
+      summary: Creates an object of the given type
+      parameters:
+        - $ref: '#/components/parameters/objectType'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertiesObject'
+      responses:
+        '200':
+          description: An object with the id and properties of the created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectOperationResponse'
+        'default':
+          description: API call failed
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /crm/v3/objects/{objectType}/{objectId}:
     get:
+      operationId: GetObject
       summary: |
         Read an Object identified by {objectId}. {objectId} refers
         to the internal object ID by default, or optionally any unique property
@@ -63,16 +88,40 @@ paths:
             'application/json':
               schema:
                 $ref: '#/components/schemas/Error'
+    patch:
+      operationId: UpdateObject
+      summary: Updates the object of the given type and the given id
+      parameters:
+        - $ref: '#/components/parameters/objectType'
+        - $ref: '#/components/parameters/objectId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertiesObject'
+      responses:
+        '200':
+          description: An object with the id and properties of the created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectOperationResponse'
+        'default':
+          description: API call failed
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /crm/v3/objects/{objectType}/search:
     post:
+      operationId: SearchObjects
       summary: |
         Filter, sort, and search CRM objects
       parameters:
         - $ref: '#/components/parameters/objectType'
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/after'
-        - $ref: '#/components/parameters/properties'
       requestBody:
         content:
           application/json:
@@ -265,8 +314,8 @@ components:
       properties:
         filterGroups:
           $ref: '#/components/schemas/SearchFilterGroups'
-        filter:
-          $ref: '#/components/schemas/SearchFilter'
+        filters:
+          $ref: '#/components/schemas/SearchFilters'
         sorts:
           $ref: '#/components/schemas/SearchOrder'
         query:
@@ -311,4 +360,35 @@ components:
           propertyName:
             type: string
           direction:
+            type: string
+
+    PropertiesObject:
+      type: object
+      properties:
+        properties:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+
+    ObjectOperationResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        archived:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        properties:
+          type: object
+          additionalProperties:
             type: string
