@@ -1,0 +1,460 @@
+{
+    "info": {
+        "version": "3.0.0",
+        "title": "HubSpot API"
+    },
+    "security": [{
+            "ApiKeyAuth": []
+        },
+        {
+            "OAuth2": [
+                "oauth",
+                "contacts"
+            ]
+        }
+    ],
+    "openapi": "3.0.0",
+    "components": {
+        "parameters": {
+            "archived": {
+                "description": "Whether to return only results that have been archived.",
+                "name": "archived",
+                "in": "query",
+                "schema": {
+                    "type": "boolean"
+                },
+                "required": false
+            },
+            "objectId": {
+                "name": "objectId",
+                "in": "path",
+                "schema": {
+                    "type": "string"
+                },
+                "required": true
+            },
+            "idProperty": {
+                "description": "The name of a property whose values are unique for this object type",
+                "name": "idProperty",
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                },
+                "required": false
+            },
+            "objectType": {
+                "description": "The object type to work with",
+                "name": "objectType",
+                "in": "path",
+                "schema": {
+                    "type": "string"
+                },
+                "required": true
+            },
+            "after": {
+                "description": "The paging cursor token of the last successfully read resource will be returned as the paging.next.after JSON property of a paged response containing more results.",
+                "name": "after",
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                },
+                "required": false
+            },
+            "associations": {
+                "description": "A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.",
+                "name": "associations",
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                },
+                "required": false
+            },
+            "limit": {
+                "description": "The maximum number of results to display per page.",
+                "name": "limit",
+                "in": "query",
+                "schema": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "required": false
+            },
+            "properties": {
+                "description": "A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.",
+                "name": "properties",
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                },
+                "required": false
+            }
+        },
+        "securitySchemes": {
+            "ApiKeyAuth": {
+                "name": "hapikey",
+                "in": "query",
+                "type": "apiKey"
+            },
+            "OAuth2": {
+                "flows": {
+                    "authorizationCode": {
+                        "scopes": {
+                            "contacts": "Read and modify contacts",
+                            "oauth": "Authenticate"
+                        },
+                        "authorizationUrl": "https://api.hubspot.com/oauth/authorize",
+                        "tokenUrl": "https://api.hubspot.com/oauth/v1/token"
+                    }
+                },
+                "type": "oauth2"
+            }
+        },
+        "schemas": {
+            "ListResponse": {
+                "properties": {
+                    "results": {
+                        "items": {
+                            "$ref": "#/components/schemas/CrmObject"
+                        },
+                        "type": "array"
+                    },
+                    "paging": {
+                        "$ref": "#/components/schemas/Paging"
+                    }
+                },
+                "type": "object"
+            },
+            "Association": {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "AssociationList": {
+                "properties": {
+                    "results": {
+                        "items": {
+                            "$ref": "#/components/schemas/Association"
+                        },
+                        "type": "array"
+                    }
+                },
+                "type": "object"
+            },
+            "SearchFilterGroups": {
+                "items": {
+                    "properties": {
+                        "filters": {
+                            "$ref": "#/components/schemas/SearchFilters"
+                        }
+                    },
+                    "type": "object"
+                },
+                "type": "array"
+            },
+            "CrmObject": {
+                "properties": {
+                    "archived": {
+                        "type": "boolean"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "associations": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/AssociationList"
+                        }
+                    },
+                    "properties": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "SearchFilters": {
+                "items": {
+                    "$ref": "#/components/schemas/SearchFilter"
+                },
+                "type": "array"
+            },
+            "Error": {
+                "properties": {
+                    "errors": {
+                        "items": {
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "in": {
+                                    "type": "string"
+                                },
+                                "code": {
+                                    "type": "string"
+                                },
+                                "links": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                },
+                                "subCategory": {
+                                    "type": "string"
+                                },
+                                "context": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "type": "array"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "category": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "correlationId": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SearchRequest": {
+                "properties": {
+                    "filter": {
+                        "$ref": "#/components/schemas/SearchFilter"
+                    },
+                    "query": {
+                        "type": "string"
+                    },
+                    "sorts": {
+                        "$ref": "#/components/schemas/SearchOrder"
+                    },
+                    "filterGroups": {
+                        "$ref": "#/components/schemas/SearchFilterGroups"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "properties": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "after": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "Paging": {
+                "properties": {
+                    "next": {
+                        "properties": {
+                            "link": {
+                                "type": "string"
+                            },
+                            "after": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "SearchFilter": {
+                "properties": {
+                    "operator": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    },
+                    "propertyName": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SearchOrder": {
+                "items": {
+                    "properties": {
+                        "propertyName": {
+                            "type": "string"
+                        },
+                        "direction": {
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "type": "array"
+            }
+        }
+    },
+    "servers": [{
+        "url": "https://api.hubspot.com"
+    }],
+    "paths": {
+        "/crm/v3/objects/{objectType}/search": {
+            "post": {
+                "summary": "Filter, sort, and search CRM objects\n",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListResponse"
+                                }
+                            }
+                        },
+                        "description": "Search results"
+                    },
+                    "default": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
+                        "description": "API call failed"
+                    }
+                },
+                "parameters": [{
+                        "$ref": "#/components/parameters/objectType"
+                    },
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/after"
+                    },
+                    {
+                        "$ref": "#/components/parameters/properties"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SearchRequest"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/crm/v3/objects/{objectType}": {
+            "get": {
+                "summary": "Returns a list of objects",
+                "parameters": [{
+                        "$ref": "#/components/parameters/objectType"
+                    },
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/after"
+                    },
+                    {
+                        "$ref": "#/components/parameters/properties"
+                    },
+                    {
+                        "$ref": "#/components/parameters/archived"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListResponse"
+                                }
+                            }
+                        },
+                        "description": "An object with a result array of objects and paging instructions"
+                    },
+                    "default": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
+                        "description": "API call failed"
+                    }
+                }
+            }
+        },
+        "/crm/v3/objects/{objectType}/{objectId}": {
+            "get": {
+                "summary": "Read an Object identified by {objectId}. {objectId} refers\nto the internal object ID by default, or optionally any unique property\nvalue as specified by the idProperty query param.\nControl what is returned via the properties query param.\n",
+                "parameters": [{
+                        "$ref": "#/components/parameters/objectType"
+                    },
+                    {
+                        "$ref": "#/components/parameters/objectId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/properties"
+                    },
+                    {
+                        "$ref": "#/components/parameters/associations"
+                    },
+                    {
+                        "$ref": "#/components/parameters/archived"
+                    },
+                    {
+                        "$ref": "#/components/parameters/idProperty"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CrmObject"
+                                }
+                            }
+                        },
+                        "description": "A company"
+                    },
+                    "default": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        },
+                        "description": "API call failed"
+                    }
+                }
+            }
+        }
+    }
+}
