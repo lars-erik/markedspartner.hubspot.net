@@ -16,7 +16,8 @@ paths:
   /crm/v3/objects/{objectType}:
     get:
       operationId: ListObjects
-      summary: Returns a list of objects
+      summary: Get page of objects
+      description: Returns a list of objects
       parameters:
         - $ref: '#/components/parameters/objectType'
         - $ref: '#/components/parameters/limit'
@@ -38,7 +39,8 @@ paths:
                 $ref: '#/components/schemas/Error'
     post:
       operationId: CreateObject
-      summary: Creates an object of the given type
+      summary: Create an object
+      description: Creates an object of the given type
       parameters:
         - $ref: '#/components/parameters/objectType'
       requestBody:
@@ -63,7 +65,8 @@ paths:
   /crm/v3/objects/{objectType}/{objectId}:
     get:
       operationId: GetObject
-      summary: |
+      summary: Read an object
+      description: |
         Read an Object identified by {objectId}. {objectId} refers
         to the internal object ID by default, or optionally any unique property
         value as specified by the idProperty query param.
@@ -90,7 +93,8 @@ paths:
                 $ref: '#/components/schemas/Error'
     patch:
       operationId: UpdateObject
-      summary: Updates the object of the given type and the given id
+      summary: Updates an object
+      description: Updates the object of the given type and the given id
       parameters:
         - $ref: '#/components/parameters/objectType'
         - $ref: '#/components/parameters/objectId'
@@ -116,7 +120,8 @@ paths:
   /crm/v3/objects/{objectType}/search:
     post:
       operationId: SearchObjects
-      summary: |
+      summary: Search for objects
+      description: |
         Filter, sort, and search CRM objects
       parameters:
         - $ref: '#/components/parameters/objectType'
@@ -140,6 +145,37 @@ paths:
             'application/json':
               schema:
                 $ref: '#/components/schemas/Error'
+
+  /crm-associations/v1/associations:
+    put:
+      operationId: AssociateObjectsV1
+      summary: Associate objects (V1)
+      description: |
+        Associate objects using the V1 API
+        https://legacydocs.hubspot.com/docs/methods/crm-associations/associate-objects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fromObjectId:
+                  type: integer
+                toObjectId:
+                  type: integer
+                category:
+                  type: string
+                definitionId:
+                  type: string
+      responses:
+        '204':
+          description: Successful associations
+        'default':
+          description: API call failed
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Error'        
 
 components:
   securitySchemes:

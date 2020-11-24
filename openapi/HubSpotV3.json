@@ -369,6 +369,28 @@
     "paths":  {
                   "/crm/v3/objects/{objectType}/search":  {
                                                               "post":  {
+                                                                           "parameters":  [
+                                                                                              {
+                                                                                                  "$ref":  "#/components/parameters/objectType"
+                                                                                              },
+                                                                                              {
+                                                                                                  "$ref":  "#/components/parameters/limit"
+                                                                                              },
+                                                                                              {
+                                                                                                  "$ref":  "#/components/parameters/after"
+                                                                                              }
+                                                                                          ],
+                                                                           "summary":  "Search for objects",
+                                                                           "description":  "Filter, sort, and search CRM objects\n",
+                                                                           "requestBody":  {
+                                                                                               "content":  {
+                                                                                                               "application/json":  {
+                                                                                                                                        "schema":  {
+                                                                                                                                                       "$ref":  "#/components/schemas/SearchRequest"
+                                                                                                                                                   }
+                                                                                                                                    }
+                                                                                                           }
+                                                                                           },
                                                                            "operationId":  "SearchObjects",
                                                                            "responses":  {
                                                                                              "200":  {
@@ -391,32 +413,72 @@
                                                                                                                          },
                                                                                                              "description":  "API call failed"
                                                                                                          }
-                                                                                         },
-                                                                           "summary":  "Filter, sort, and search CRM objects\n",
-                                                                           "requestBody":  {
-                                                                                               "content":  {
-                                                                                                               "application/json":  {
-                                                                                                                                        "schema":  {
-                                                                                                                                                       "$ref":  "#/components/schemas/SearchRequest"
-                                                                                                                                                   }
-                                                                                                                                    }
-                                                                                                           }
-                                                                                           },
-                                                                           "parameters":  [
-                                                                                              {
-                                                                                                  "$ref":  "#/components/parameters/objectType"
-                                                                                              },
-                                                                                              {
-                                                                                                  "$ref":  "#/components/parameters/limit"
-                                                                                              },
-                                                                                              {
-                                                                                                  "$ref":  "#/components/parameters/after"
-                                                                                              }
-                                                                                          ]
+                                                                                         }
                                                                        }
                                                           },
+                  "/crm-associations/v1/associations":  {
+                                                            "put":  {
+                                                                        "operationId":  "AssociateObjectsV1",
+                                                                        "description":  "Associate objects using the V1 API\nhttps://legacydocs.hubspot.com/docs/methods/crm-associations/associate-objects\n",
+                                                                        "summary":  "Associate objects (V1)",
+                                                                        "responses":  {
+                                                                                          "204":  {
+                                                                                                      "description":  "Successful associations"
+                                                                                                  },
+                                                                                          "default":  {
+                                                                                                          "content":  {
+                                                                                                                          "application/json":  {
+                                                                                                                                                   "schema":  {
+                                                                                                                                                                  "$ref":  "#/components/schemas/Error"
+                                                                                                                                                              }
+                                                                                                                                               }
+                                                                                                                      },
+                                                                                                          "description":  "API call failed"
+                                                                                                      }
+                                                                                      },
+                                                                        "requestBody":  {
+                                                                                            "content":  {
+                                                                                                            "application/json":  {
+                                                                                                                                     "schema":  {
+                                                                                                                                                    "properties":  {
+                                                                                                                                                                       "toObjectId":  {
+                                                                                                                                                                                          "type":  "integer"
+                                                                                                                                                                                      },
+                                                                                                                                                                       "fromObjectId":  {
+                                                                                                                                                                                            "type":  "integer"
+                                                                                                                                                                                        },
+                                                                                                                                                                       "definitionId":  {
+                                                                                                                                                                                            "type":  "string"
+                                                                                                                                                                                        },
+                                                                                                                                                                       "category":  {
+                                                                                                                                                                                        "type":  "string"
+                                                                                                                                                                                    }
+                                                                                                                                                                   },
+                                                                                                                                                    "type":  "object"
+                                                                                                                                                }
+                                                                                                                                 }
+                                                                                                        }
+                                                                                        }
+                                                                    }
+                                                        },
                   "/crm/v3/objects/{objectType}":  {
                                                        "post":  {
+                                                                    "parameters":  [
+                                                                                       {
+                                                                                           "$ref":  "#/components/parameters/objectType"
+                                                                                       }
+                                                                                   ],
+                                                                    "summary":  "Create an object",
+                                                                    "description":  "Creates an object of the given type",
+                                                                    "requestBody":  {
+                                                                                        "content":  {
+                                                                                                        "application/json":  {
+                                                                                                                                 "schema":  {
+                                                                                                                                                "$ref":  "#/components/schemas/PropertiesObject"
+                                                                                                                                            }
+                                                                                                                             }
+                                                                                                    }
+                                                                                    },
                                                                     "operationId":  "CreateObject",
                                                                     "responses":  {
                                                                                       "200":  {
@@ -439,25 +501,12 @@
                                                                                                                   },
                                                                                                       "description":  "API call failed"
                                                                                                   }
-                                                                                  },
-                                                                    "summary":  "Creates an object of the given type",
-                                                                    "requestBody":  {
-                                                                                        "content":  {
-                                                                                                        "application/json":  {
-                                                                                                                                 "schema":  {
-                                                                                                                                                "$ref":  "#/components/schemas/PropertiesObject"
-                                                                                                                                            }
-                                                                                                                             }
-                                                                                                    }
-                                                                                    },
-                                                                    "parameters":  [
-                                                                                       {
-                                                                                           "$ref":  "#/components/parameters/objectType"
-                                                                                       }
-                                                                                   ]
+                                                                                  }
                                                                 },
                                                        "get":  {
                                                                    "operationId":  "ListObjects",
+                                                                   "description":  "Returns a list of objects",
+                                                                   "summary":  "Get page of objects",
                                                                    "responses":  {
                                                                                      "200":  {
                                                                                                  "content":  {
@@ -480,7 +529,6 @@
                                                                                                      "description":  "API call failed"
                                                                                                  }
                                                                                  },
-                                                                   "summary":  "Returns a list of objects",
                                                                    "parameters":  [
                                                                                       {
                                                                                           "$ref":  "#/components/parameters/objectType"
@@ -502,6 +550,25 @@
                                                    },
                   "/crm/v3/objects/{objectType}/{objectId}":  {
                                                                   "patch":  {
+                                                                                "parameters":  [
+                                                                                                   {
+                                                                                                       "$ref":  "#/components/parameters/objectType"
+                                                                                                   },
+                                                                                                   {
+                                                                                                       "$ref":  "#/components/parameters/objectId"
+                                                                                                   }
+                                                                                               ],
+                                                                                "summary":  "Updates an object",
+                                                                                "description":  "Updates the object of the given type and the given id",
+                                                                                "requestBody":  {
+                                                                                                    "content":  {
+                                                                                                                    "application/json":  {
+                                                                                                                                             "schema":  {
+                                                                                                                                                            "$ref":  "#/components/schemas/PropertiesObject"
+                                                                                                                                                        }
+                                                                                                                                         }
+                                                                                                                }
+                                                                                                },
                                                                                 "operationId":  "UpdateObject",
                                                                                 "responses":  {
                                                                                                   "200":  {
@@ -524,28 +591,12 @@
                                                                                                                               },
                                                                                                                   "description":  "API call failed"
                                                                                                               }
-                                                                                              },
-                                                                                "summary":  "Updates the object of the given type and the given id",
-                                                                                "requestBody":  {
-                                                                                                    "content":  {
-                                                                                                                    "application/json":  {
-                                                                                                                                             "schema":  {
-                                                                                                                                                            "$ref":  "#/components/schemas/PropertiesObject"
-                                                                                                                                                        }
-                                                                                                                                         }
-                                                                                                                }
-                                                                                                },
-                                                                                "parameters":  [
-                                                                                                   {
-                                                                                                       "$ref":  "#/components/parameters/objectType"
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "$ref":  "#/components/parameters/objectId"
-                                                                                                   }
-                                                                                               ]
+                                                                                              }
                                                                             },
                                                                   "get":  {
                                                                               "operationId":  "GetObject",
+                                                                              "description":  "Read an Object identified by {objectId}. {objectId} refers\nto the internal object ID by default, or optionally any unique property\nvalue as specified by the idProperty query param.\nControl what is returned via the properties query param.\n",
+                                                                              "summary":  "Read an object",
                                                                               "responses":  {
                                                                                                 "200":  {
                                                                                                             "content":  {
@@ -568,7 +619,6 @@
                                                                                                                 "description":  "API call failed"
                                                                                                             }
                                                                                             },
-                                                                              "summary":  "Read an Object identified by {objectId}. {objectId} refers\nto the internal object ID by default, or optionally any unique property\nvalue as specified by the idProperty query param.\nControl what is returned via the properties query param.\n",
                                                                               "parameters":  [
                                                                                                  {
                                                                                                      "$ref":  "#/components/parameters/objectType"

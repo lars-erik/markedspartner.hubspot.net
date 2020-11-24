@@ -7,6 +7,39 @@ basePath: /
 schemes:
   - https
 paths:
+  /crm-associations/v1/associations:
+    put:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          schema:
+            properties:
+              category:
+                type: string
+              definitionId:
+                type: string
+              fromObjectId:
+                type: integer
+              toObjectId:
+                type: integer
+            type: object
+      responses:
+        '204':
+          description: Successful associations
+        default:
+          description: API call failed
+          schema:
+            $ref: '#/definitions/Error'
+      description: >
+        Associate objects using the V1 API
+
+        https://legacydocs.hubspot.com/docs/methods/crm-associations/associate-objects
+      operationId: AssociateObjectsV1
+      summary: Associate objects (V1)
   '/crm/v3/objects/{objectType}':
     get:
       produces:
@@ -53,8 +86,9 @@ paths:
           description: API call failed
           schema:
             $ref: '#/definitions/Error'
+      description: Returns a list of objects
       operationId: ListObjects
-      summary: Returns a list of objects
+      summary: Get page of objects
     post:
       consumes:
         - application/json
@@ -79,8 +113,9 @@ paths:
           description: API call failed
           schema:
             $ref: '#/definitions/Error'
+      description: Creates an object of the given type
       operationId: CreateObject
-      summary: Creates an object of the given type
+      summary: Create an object
   '/crm/v3/objects/{objectType}/search':
     post:
       consumes:
@@ -120,9 +155,10 @@ paths:
           description: API call failed
           schema:
             $ref: '#/definitions/Error'
-      operationId: SearchObjects
-      summary: |
+      description: |
         Filter, sort, and search CRM objects
+      operationId: SearchObjects
+      summary: Search for objects
   '/crm/v3/objects/{objectType}/{objectId}':
     get:
       produces:
@@ -172,12 +208,13 @@ paths:
           description: API call failed
           schema:
             $ref: '#/definitions/Error'
-      operationId: GetObject
-      summary: |
+      description: |
         Read an Object identified by {objectId}. {objectId} refers
         to the internal object ID by default, or optionally any unique property
         value as specified by the idProperty query param.
         Control what is returned via the properties query param.
+      operationId: GetObject
+      summary: Read an object
     patch:
       consumes:
         - application/json
@@ -206,8 +243,9 @@ paths:
           description: API call failed
           schema:
             $ref: '#/definitions/Error'
+      description: Updates the object of the given type and the given id
       operationId: UpdateObject
-      summary: Updates the object of the given type and the given id
+      summary: Updates an object
 definitions:
   Association:
     properties:
