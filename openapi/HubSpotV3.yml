@@ -146,6 +146,61 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /crm/v3/owners:
+    get:
+      operationId: GetOwners
+      summary: Get a page of owners
+      description: Get a page of owners
+      parameters:
+        - name: email
+          description: Filter by email address
+          in: query
+          required: false
+          schema: 
+            type: string
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/after'
+      responses:
+        200:
+          description: Page of owners
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        firstName: 
+                          type: string
+                        lastName: 
+                          type: string
+                        createdAt:
+                          type: string
+                        archived:
+                          type: boolean
+                        teams:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              name:
+                                type: string
+                        id:
+                          type: string
+                        userId:
+                          type: integer
+                        email:
+                          type: string
+                        updatedAt:
+                          type: string
+                  paging: 
+                    $ref: '#/components/schemas/Paging'
+
   /crm-associations/v1/associations:
     put:
       operationId: AssociateObjectsV1

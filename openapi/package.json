@@ -11,7 +11,8 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "generate-json": "api-spec-converter --from=openapi_3 --to=swagger_2 --syntax=json HubSpotV3.json > HubSpotV3.swagger.json",
         "generate-yml": "api-spec-converter --from=openapi_3 --to=swagger_2 --syntax=yaml HubSpotV3.json > HubSpotV3.swagger.yaml",
-        "generate": "npm run generate-json & npm run generate-yml"
+        "generate": "npm run generate-json & npm run generate-yml",
+        "build": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./generateformats.ps1"
     },
     "author": "",
     "license": "ISC"

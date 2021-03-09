@@ -548,6 +548,93 @@
                                                                                   ]
                                                                }
                                                    },
+                  "/crm/v3/owners":  {
+                                         "get":  {
+                                                     "operationId":  "GetOwners",
+                                                     "description":  "Get a page of owners",
+                                                     "summary":  "Get a page of owners",
+                                                     "responses":  {
+                                                                       "200":  {
+                                                                                   "content":  {
+                                                                                                   "application/json":  {
+                                                                                                                            "schema":  {
+                                                                                                                                           "properties":  {
+                                                                                                                                                              "results":  {
+                                                                                                                                                                              "items":  {
+                                                                                                                                                                                            "properties":  {
+                                                                                                                                                                                                               "archived":  {
+                                                                                                                                                                                                                                "type":  "boolean"
+                                                                                                                                                                                                                            },
+                                                                                                                                                                                                               "id":  {
+                                                                                                                                                                                                                          "type":  "string"
+                                                                                                                                                                                                                      },
+                                                                                                                                                                                                               "createdAt":  {
+                                                                                                                                                                                                                                 "type":  "string"
+                                                                                                                                                                                                                             },
+                                                                                                                                                                                                               "firstName":  {
+                                                                                                                                                                                                                                 "type":  "string"
+                                                                                                                                                                                                                             },
+                                                                                                                                                                                                               "lastName":  {
+                                                                                                                                                                                                                                "type":  "string"
+                                                                                                                                                                                                                            },
+                                                                                                                                                                                                               "teams":  {
+                                                                                                                                                                                                                             "items":  {
+                                                                                                                                                                                                                                           "properties":  {
+                                                                                                                                                                                                                                                              "id":  {
+                                                                                                                                                                                                                                                                         "type":  "string"
+                                                                                                                                                                                                                                                                     },
+                                                                                                                                                                                                                                                              "name":  {
+                                                                                                                                                                                                                                                                           "type":  "string"
+                                                                                                                                                                                                                                                                       }
+                                                                                                                                                                                                                                                          },
+                                                                                                                                                                                                                                           "type":  "object"
+                                                                                                                                                                                                                                       },
+                                                                                                                                                                                                                             "type":  "array"
+                                                                                                                                                                                                                         },
+                                                                                                                                                                                                               "updatedAt":  {
+                                                                                                                                                                                                                                 "type":  "string"
+                                                                                                                                                                                                                             },
+                                                                                                                                                                                                               "userId":  {
+                                                                                                                                                                                                                              "type":  "integer"
+                                                                                                                                                                                                                          },
+                                                                                                                                                                                                               "email":  {
+                                                                                                                                                                                                                             "type":  "string"
+                                                                                                                                                                                                                         }
+                                                                                                                                                                                                           },
+                                                                                                                                                                                            "type":  "object"
+                                                                                                                                                                                        },
+                                                                                                                                                                              "type":  "array"
+                                                                                                                                                                          },
+                                                                                                                                                              "paging":  {
+                                                                                                                                                                             "$ref":  "#/components/schemas/Paging"
+                                                                                                                                                                         }
+                                                                                                                                                          },
+                                                                                                                                           "type":  "object"
+                                                                                                                                       }
+                                                                                                                        }
+                                                                                               },
+                                                                                   "description":  "Page of owners"
+                                                                               }
+                                                                   },
+                                                     "parameters":  [
+                                                                        {
+                                                                            "description":  "Filter by email address",
+                                                                            "name":  "email",
+                                                                            "in":  "query",
+                                                                            "schema":  {
+                                                                                           "type":  "string"
+                                                                                       },
+                                                                            "required":  false
+                                                                        },
+                                                                        {
+                                                                            "$ref":  "#/components/parameters/limit"
+                                                                        },
+                                                                        {
+                                                                            "$ref":  "#/components/parameters/after"
+                                                                        }
+                                                                    ]
+                                                 }
+                                     },
                   "/crm/v3/objects/{objectType}/{objectId}":  {
                                                                   "patch":  {
                                                                                 "parameters":  [

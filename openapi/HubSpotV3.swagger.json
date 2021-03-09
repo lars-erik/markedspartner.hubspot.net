@@ -331,6 +331,99 @@
         "operationId": "UpdateObject",
         "summary": "Updates an object"
       }
+    },
+    "/crm/v3/owners": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "Filter by email address",
+            "in": "query",
+            "name": "email",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The maximum number of results to display per page.",
+            "format": "int64",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "description": "The paging cursor token of the last successfully read resource will be returned as the paging.next.after JSON property of a paged response containing more results.",
+            "in": "query",
+            "name": "after",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Page of owners",
+            "schema": {
+              "properties": {
+                "paging": {
+                  "$ref": "#/definitions/Paging"
+                },
+                "results": {
+                  "items": {
+                    "properties": {
+                      "archived": {
+                        "type": "boolean"
+                      },
+                      "createdAt": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "firstName": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "string"
+                      },
+                      "lastName": {
+                        "type": "string"
+                      },
+                      "teams": {
+                        "items": {
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "updatedAt": {
+                        "type": "string"
+                      },
+                      "userId": {
+                        "type": "integer"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "description": "Get a page of owners",
+        "operationId": "GetOwners",
+        "summary": "Get a page of owners"
+      }
     }
   },
   "definitions": {
