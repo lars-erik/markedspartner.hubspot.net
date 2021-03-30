@@ -4,7 +4,8 @@
     "description": "",
     "main": "index.js",
     "dependencies": {
-        "api-spec-converter": "^2.11.2"
+        "api-spec-converter": "^2.11.2",
+        "node-fetch": "^2.6.1"
     },
     "devDependencies": {},
     "scripts": {

@@ -1,0 +1,32 @@
+{
+    "type": "Microsoft.Web/customApis",
+    "apiVersion": "2016-06-01",
+    "name": "{connectorName}",
+    "location": "westeurope",
+    "properties": {
+        "connectionParameters": {
+            "api_key": {
+                "type": "securestring",
+                "uiDefinition": {
+                    "displayName": "APIKey",
+                    "description": "The APIKey for this api",
+                    "tooltip": "Provide your APIKey",
+                    "constraints": {
+                        "tabIndex": 2,
+                        "clearText": false,
+                        "required": "true"
+                    }
+                }
+            }
+        },
+        "description": "{connectorDescription}",
+        "displayName": "{connectorName}",
+        "iconUri": "/Content/retail/assets/default-connection-icon.e6bb72160664a5e37b9923c3d9f50ca5.2.svg",
+        "backendService": {
+            "serviceUrl": "https://api.hubapi.com" 
+        },
+        "swagger": {
+
+        }
+    }
+}
