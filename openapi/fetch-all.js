@@ -48,10 +48,10 @@ const wrapInArm = ep => spec => {
     let name = spec.info.title;
     let fullName = "MP-HS-" + ep.api + "-" + name.replace(" ", "");
     let resource = Object.assign({}, template, {
-        name: fullName
+        name: `[concat('${fullName}', parameters('Suffix'))]`
     });
     resource.properties = Object.assign({}, resource.properties, {
-        displayName: "MP HubSpot " + ep.api + " " + name,
+        displayName: "[concat('MP HubSpot " + ep.api + " " + name + "', parameters('Suffix'))]",
         description: "",
         swagger: spec
     });

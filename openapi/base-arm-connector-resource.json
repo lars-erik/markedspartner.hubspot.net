@@ -1,8 +1,8 @@
 {
     "type": "Microsoft.Web/customApis",
     "apiVersion": "2016-06-01",
-    "name": "{connectorName}",
-    "location": "westeurope",
+    "name": "[concatenate('{connectorName}', parameters('Suffix')]",
+    "location": "[parameters('Location')]",
     "properties": {
         "connectionParameters": {
             "api_key": {
@@ -20,7 +20,7 @@
             }
         },
         "description": "{connectorDescription}",
-        "displayName": "{connectorName}",
+        "displayName": "[concatenate('{connectorName}', parameters('Suffix')]",
         "iconUri": "/Content/retail/assets/default-connection-icon.e6bb72160664a5e37b9923c3d9f50ca5.2.svg",
         "backendService": {
             "serviceUrl": "https://api.hubapi.com" 
