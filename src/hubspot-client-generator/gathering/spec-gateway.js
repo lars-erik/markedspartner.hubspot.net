@@ -24,7 +24,7 @@ const fetchEndpoints = (endpointDefinitions) =>
         }, []));
 
 const fetchSpecs = (endpointDefinitions, convert) =>
-    fetchEndpoints(endpointDefinitions.slice(0, 1))
+    fetchEndpoints(endpointDefinitions)
         .then(endpoints => 
             Promise.all(
                 endpoints.map(endpointDefinition =>

@@ -1,19 +1,36 @@
 const fetch = require("node-fetch");
 const specGateway = require("./gathering/spec-gateway");
 
-const passThrough = x => x;
+const passThrough = x => x.spec;
 const stringify = x => JSON.stringify(x, null, '  ')
 
 const generators = {
-    'default': { itemAction: passThrough, aggregateAction: stringify },
+    'download': { itemAction: passThrough, aggregateAction: stringify },
     'arm': require('./generators/logic-apps/generator')
 }
 
-const action = process.argv.slice(2)[0] || 'default';
+const args = process.argv.slice(2);
+const action = args[0] || 'help';
+const filterArg = args[1] || '';
+let endpointDefinitions = filterArg.split(',').map(x => { var pair = x.split('.'); return {group:pair[0],name:pair[1]};});
+if (endpointDefinitions.length === 1 && endpointDefinitions[0].group === '') {
+    endpointDefinitions = [];
+}
 
-if (action === 'endpoints') {
+if (action === 'help') {
+    console.log('Usage: node index.html <action> <endpoints>');
+    console.log('Actions:');
+    console.log('  endpoints: Lists all endpoints as JSON array');
+    console.log('  download: Downloads all specs and outputs JSON array');
+    console.log('  arm: Generates Logic App Connectors and outputs ARM template');
+    console.log('Endpoints:');
+    console.log('  May be omitted. Will then return all endpoints.');
+    console.log('  Format is API group dot API name, separated by comma.');
+    console.log('  For example CRM.Contacts,CRM.Companies,CRM.Deals');
+}
+else if (action === 'endpoints') {
 
-    specGateway.fetchEndpoints()
+    specGateway.fetchEndpoints(endpointDefinitions)
         .then(stringify)
         .then(console.log);
 
@@ -21,12 +38,12 @@ if (action === 'endpoints') {
 
     let generator = generators[action];
 
-    const endpointDefinitions = [
-        { 'group': 'CRM', 'name': 'Contacts' },
-        // { 'group': 'CRM', 'name': 'Deals' }
-        // {'group':'CRM', 'name':'Line Items'},
-        // {'group':'CRM', 'name':'Associations'},
-    ];
+    // const endpointDefinitions = [
+    //     { 'group': 'CRM', 'name': 'Contacts' },
+    //     // { 'group': 'CRM', 'name': 'Deals' }
+    //     // {'group':'CRM', 'name':'Line Items'},
+    //     // {'group':'CRM', 'name':'Associations'},
+    // ];
 
     specGateway.fetchSpecs(endpointDefinitions)
         .then((epSpecs) =>
