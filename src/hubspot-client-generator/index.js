@@ -6,7 +6,8 @@ const stringify = x => JSON.stringify(x, null, '  ')
 
 const generators = {
     'download': { itemAction: passThrough, aggregateAction: stringify },
-    'arm': require('./generators/logic-apps/generator')
+    'arm': require('./generators/logic-apps/generator'),
+    'csharp': require('./generators/merge/generator')
 }
 
 const args = process.argv.slice(2);
@@ -23,6 +24,8 @@ if (action === 'help') {
     console.log('  endpoints: Lists all endpoints as JSON array');
     console.log('  download: Downloads all specs and outputs JSON array');
     console.log('  arm: Generates Logic App Connectors and outputs ARM template');
+    console.log('  merge: Generates a merged OpenAPI spec and outputs a single JSON spec.');
+    console.log('  csharp: Generates C# code and outputs a solution.');
     console.log('Endpoints:');
     console.log('  May be omitted. Will then return all endpoints.');
     console.log('  Format is API group dot API name, separated by comma.');

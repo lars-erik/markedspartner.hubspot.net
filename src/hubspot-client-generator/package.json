@@ -11,6 +11,7 @@
   "dependencies": {
     "@openapitools/openapi-generator-cli": "^2.3.6",
     "api-spec-converter": "^2.12.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "openapi-merge": "^1.1.33"
   }
 }
