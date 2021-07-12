@@ -2,6 +2,18 @@
   "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
   "spaces": 2,
   "generator-cli": {
-    "version": "5.1.1"
+    "version": "5.1.1",
+    "generators": {
+      "hsfw": {
+        "generatorName": "csharp",
+        "output": "#{cwd}/../../output/csharp/hswf",
+        "glob": "#{cwd}/../../../output/api/merged.json",
+        "additionalProperties": {
+          "packageName": "HubSpot.Net",
+          "targetFramework": "v4.5.2",
+          "useDateTimeOffset": true
+        }
+      }
+    }
   }
 }

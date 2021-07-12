@@ -1,13 +1,119 @@
-WIP to generate client libraries from HubSpot Open API specs.
+A CLI to view, transform or generate client libraries from HubSpot Open API specs.
 
-All, or a filtered list of APIs can be downloaded with the node script.  
-Next step is to merge them using https://www.npmjs.com/package/openapi-merge.  
-Final step is to use https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/csharp.md
-to generate a solution with all the filtered APIs.
+## Usage
 
-Example usage without merge:
+The CLI is not packaged up properly and must be ran from `/src/hubspot-client-generator`.
 
-    node src/hubspot-client-generator/index.json download CRM.Contacts > output/contacts.json
-    [manually remove array wrapper from contacts.json]
-    npx openapi-generator-cli generate -g csharp -i ./output/contacts.json -o ./output --package-name Our.HubSpot
+### Examples
+
+    node index.js <command> [filter]
+
+**Generating a merged Open API spec**
+
+    node index.js merge CRM.Contacts,CRM.Companies,CRM.Deals
+
+will output a merged Open API spec for the three APIs.
+
+**Generating a solution with clients for a set of APIs**
+
+    node index.js csharp CRM.Contacts,CRM.Companies,CRM.Deals
+
+### Help
+
+    node index.js
+
+shows help
+
+    Usage: node index.html <action> [endpoints]
+    Actions:
+    endpoints: Lists all endpoints as JSON array
+    download: Downloads all specs and outputs JSON array
+    arm: Generates Logic App Connectors and outputs ARM template
+    merge: Generates a merged OpenAPI spec and outputs a single JSON spec.
+    csharp: Generates C# code and outputs a solution.
+    Endpoints:
+    May be omitted. Will then return all endpoints.
+    Format is API group dot API name, separated by comma.
+    For example CRM.Contacts,CRM.Companies,CRM.Deals
+
+### Endpoints
+
+    node index.js endpoints
+
+lists all endpoints as a JSON array
+
+    [
+    {
+        "openAPI": "https://api.hubspot.com/api-catalog-public/v1/apis/webhooks/v3",
+        "stage": "LATEST",
+        "api": "WEBHOOKS"
+    },
+    {
+        "openAPI": "https://api.hubspot.com/api-catalog-public/v1/apis/events/v3/events",
+        "stage": "DEVELOPER_PREVIEW",
+        "api": "EVENTS"
+    },
+    {
+        "openAPI": "https://api.hubspot.com/api-catalog-public/v1/apis/communication-preferences/v3",
+        "stage": "DEVELOPER_PREVIEW",
+        "api": "COMMUNICATION-PREFERENCES"
+    },
+    ...
+
+### Download
+
+    node index.js download
+
+outputs an array of each specification
+
+    [
+        {
+            "openApi": {
+                "info": {
+                    "title": "Contacts"
+                },
+                ...
+            }
+        },
+            {
+            "openApi": {
+                "info": {
+                    "title": "Companies"
+                },
+                ...
+            }
+        }
+    ]
+
+### Merge
+
+    node index.js merge
+
+outputs a merged Open API spec of all endpoints.
+
+    {
+        "openapi": "3.0.3",
+        "info": {
+            "title": "HubSpot",
+            "version": "v3"
+        },
+        "servers": [
+            {
+            "url": "https://api.hubapi.com/"
+            }
+        ],
+        "tags": [
+            {
+            "name": "Basic"
+            },
+            {
+            "name": "Search"
+            },
+            ...
+
+### CSharp
+
+    node index.js csharp
+
+generates code using openapi-generator based on config in `./src/hubspot-client-generator/openapitools.json`.
 

@@ -7,7 +7,8 @@ const stringify = x => JSON.stringify(x, null, '  ')
 const generators = {
     'download': { itemAction: passThrough, aggregateAction: stringify },
     'arm': require('./generators/logic-apps/generator'),
-    'csharp': require('./generators/merge/generator')
+    'merge': require('./generators/merge/generator'),
+    'csharp': require('./generators/csharp/generator'),
 }
 
 const args = process.argv.slice(2);
@@ -19,13 +20,13 @@ if (endpointDefinitions.length === 1 && endpointDefinitions[0].group === '') {
 }
 
 if (action === 'help') {
-    console.log('Usage: node index.html <action> <endpoints>');
+    console.log('Usage: node index.html <action> [endpoints]');
     console.log('Actions:');
     console.log('  endpoints: Lists all endpoints as JSON array');
     console.log('  download: Downloads all specs and outputs JSON array');
     console.log('  arm: Generates Logic App Connectors and outputs ARM template');
     console.log('  merge: Generates a merged OpenAPI spec and outputs a single JSON spec.');
-    console.log('  csharp: Generates C# code and outputs a solution.');
+    console.log('  csharp: Generates C# code and outputs a solution to ./output.');
     console.log('Endpoints:');
     console.log('  May be omitted. Will then return all endpoints.');
     console.log('  Format is API group dot API name, separated by comma.');
@@ -40,13 +41,6 @@ else if (action === 'endpoints') {
 } else {
 
     let generator = generators[action];
-
-    // const endpointDefinitions = [
-    //     { 'group': 'CRM', 'name': 'Contacts' },
-    //     // { 'group': 'CRM', 'name': 'Deals' }
-    //     // {'group':'CRM', 'name':'Line Items'},
-    //     // {'group':'CRM', 'name':'Associations'},
-    // ];
 
     specGateway.fetchSpecs(endpointDefinitions)
         .then((epSpecs) =>
