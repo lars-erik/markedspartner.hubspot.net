@@ -2,7 +2,8 @@ A CLI to view, transform or generate client libraries from HubSpot Open API spec
 
 ## Usage
 
-The CLI is not packaged up properly and must be ran from `/src/hubspot-client-generator`.
+The CLI is not packaged up properly and must be ran from `/src/hubspot-client-generator`.  
+The code is generated based on config in [`openapitools.json`](https://github.com/OpenAPITools/openapi-generator-cli#configuration).
 
 ### Examples
 
@@ -111,9 +112,9 @@ outputs a merged Open API spec of all endpoints.
             },
             ...
 
-### CSharp
+### OpenApi Generator
 
-    node index.js csharp
+    node index.js generate
 
 generates code using openapi-generator based on config in `./src/hubspot-client-generator/openapitools.json`.
 

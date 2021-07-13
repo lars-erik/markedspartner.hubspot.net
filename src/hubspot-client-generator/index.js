@@ -8,7 +8,7 @@ const generators = {
     'download': { itemAction: passThrough, aggregateAction: stringify },
     'arm': require('./generators/logic-apps/generator'),
     'merge': require('./generators/merge/generator'),
-    'csharp': require('./generators/csharp/generator'),
+    'generate': require('./generators/generate/generator'),
 }
 
 const args = process.argv.slice(2);
@@ -26,7 +26,7 @@ if (action === 'help') {
     console.log('  download: Downloads all specs and outputs JSON array');
     console.log('  arm: Generates Logic App Connectors and outputs ARM template');
     console.log('  merge: Generates a merged OpenAPI spec and outputs a single JSON spec.');
-    console.log('  csharp: Generates C# code and outputs a solution to ./output.');
+    console.log('  generate: Generates code based on openapitools.json.');
     console.log('Endpoints:');
     console.log('  May be omitted. Will then return all endpoints.');
     console.log('  Format is API group dot API name, separated by comma.');

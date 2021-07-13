@@ -1,4 +1,4 @@
-const mergeActions = require('./../merge/generator');
+const mergeActions = require('../merge/generator');
 const fs = require('fs');
 const { exec } = require('child_process');
 
