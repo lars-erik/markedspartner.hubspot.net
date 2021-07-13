@@ -19,7 +19,7 @@ const fetchEndpoints = (endpointDefinitions) =>
         .then(apis => (endpointDefinitions || []).length > 0 ? apis.filter(groupInSpecs(endpointDefinitions)) : apis)
         .then(apis => apis.reduce((result, api) => {
             const featureNames = (endpointDefinitions || []).length > 0 ? filteredFeatureNames(api, endpointDefinitions) : Object.keys(api.features);
-            result = result.concat(featureNames.map(feature => Object.assign({}, api.features[feature], { api: api.name })));
+            result = result.concat(featureNames.map(feature => Object.assign({}, api.features[feature], { api: api.name, name: feature })));
             return result;
         }, []));
 
