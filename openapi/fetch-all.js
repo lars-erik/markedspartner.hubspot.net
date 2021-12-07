@@ -58,11 +58,15 @@ const wrapInArm = ep => spec => {
     return resource;
 }
 
-const specs = [
+const allSpecs = [
     {'group':'CRM', 'name':'Contacts'},
     {'group':'CRM', 'name':'Deals'},
     {'group':'CRM', 'name':'Line Items'},
     {'group':'CRM', 'name':'Associations'},
+];
+
+const specs = [
+    {'group':'CRM', 'name':'Properties'},
 ];
 
 
