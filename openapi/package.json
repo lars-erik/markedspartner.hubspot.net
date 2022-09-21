@@ -14,7 +14,7 @@
         "generate-yml": "api-spec-converter --from=openapi_3 --to=swagger_2 --syntax=yaml HubSpotV3.json > HubSpotV3.swagger.yaml",
         "generate": "npm run generate-json & npm run generate-yml",
         "build": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./generateformats.ps1",
-        "generate-logic-app-connectors": "node ./fetch-all.js > out.json"
+        "generate-logic-app-connectors": "node ./fetch-all.js test > out.json"
     },
     "author": "",
     "license": "ISC"

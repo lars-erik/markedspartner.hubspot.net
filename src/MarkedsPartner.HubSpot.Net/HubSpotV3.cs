@@ -5,6 +5,7 @@
 //----------------------
 
 using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace MarkedsPartner.HubSpot.Net
 {
@@ -34,8 +35,7 @@ namespace MarkedsPartner.HubSpot.Net
         {
             if (!System.String.IsNullOrEmpty(apiKey))
             {
-                urlBuilder.Append(urlBuilder.ToString().Contains("?") ? "&" : "?");
-                urlBuilder.AppendFormat("hapikey={0}", apiKey);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
             }
         }
 

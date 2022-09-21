@@ -44,7 +44,7 @@ const compatibilize = spec => {
     return spec;
 }
 
-const wrapInArm = ep => spec => {
+const swaggerToLogicAppConnector = ep => spec => {
     let name = spec.info.title;
     let fullName = "MP-HS-" + ep.api + "-" + name.replace(" ", "");
     let resource = Object.assign({}, template, {
@@ -58,25 +58,43 @@ const wrapInArm = ep => spec => {
     return resource;
 }
 
+const wrapInArmTemplate = resources => {
+    return Object.assign(envelope, {resources});
+}
+
+const passThrough = x => x;
+
 const specs = [
+    {'group':'CRM', 'name':'Companies'},
     {'group':'CRM', 'name':'Contacts'},
     {'group':'CRM', 'name':'Deals'},
     {'group':'CRM', 'name':'Line Items'},
     {'group':'CRM', 'name':'Associations'},
 ];
 
+const itemActions = {
+    'default': passThrough,
+    'arm': swaggerToLogicAppConnector
+}
 
-fetchSpecEndpoints(specs)
+const aggregateActions = {
+    'default': passThrough,
+    'arm': wrapInArmTemplate
+}
+
+const action = process.argv.slice(2)[0] || 'default';
+let itemAction = itemActions[action];
+let aggregateAction = aggregateActions[action];
+
+fetchSpecEndpoints(specs.slice(0, 1))
     .then(endpoints => Promise.all(
         endpoints.map(ep => 
             getUrl(ep.openAPI)
                 .then(convert)
                 .then(compatibilize)
-                .then(wrapInArm(ep))
+                .then(itemAction(ep))
         )))
-    .then(resources => 
-        Object.assign(envelope, {resources})    
-    )
+    .then(aggregateAction)
     .then(result => {
         console.log(JSON.stringify(result, null, '    '));
     });

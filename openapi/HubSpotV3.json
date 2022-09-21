@@ -1,732 +1,730 @@
 {
-    "info":  {
-                 "version":  "3.0.0",
-                 "title":  "HubSpot API"
-             },
-    "security":  [
-                     {
-                         "ApiKeyAuth":  [
-
-                                        ]
-                     },
-                     {
-                         "OAuth2":  [
-                                        "oauth",
-                                        "contacts"
-                                    ]
-                     }
-                 ],
-    "openapi":  "3.0.0",
-    "components":  {
-                       "parameters":  {
-                                          "archived":  {
-                                                           "description":  "Whether to return only results that have been archived.",
-                                                           "name":  "archived",
-                                                           "in":  "query",
-                                                           "schema":  {
-                                                                          "type":  "boolean"
-                                                                      },
-                                                           "required":  false
-                                                       },
-                                          "objectId":  {
-                                                           "name":  "objectId",
-                                                           "in":  "path",
-                                                           "schema":  {
-                                                                          "type":  "string"
-                                                                      },
-                                                           "required":  true
-                                                       },
-                                          "idProperty":  {
-                                                             "description":  "The name of a property whose values are unique for this object type",
-                                                             "name":  "idProperty",
-                                                             "in":  "query",
-                                                             "schema":  {
-                                                                            "type":  "string"
-                                                                        },
-                                                             "required":  false
-                                                         },
-                                          "objectType":  {
-                                                             "description":  "The object type to work with",
-                                                             "name":  "objectType",
-                                                             "in":  "path",
-                                                             "schema":  {
-                                                                            "type":  "string"
-                                                                        },
-                                                             "required":  true
-                                                         },
-                                          "after":  {
-                                                        "description":  "The paging cursor token of the last successfully read resource will be returned as the paging.next.after JSON property of a paged response containing more results.",
-                                                        "name":  "after",
-                                                        "in":  "query",
-                                                        "schema":  {
-                                                                       "type":  "string"
-                                                                   },
-                                                        "required":  false
-                                                    },
-                                          "associations":  {
-                                                               "description":  "A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.",
-                                                               "name":  "associations",
-                                                               "in":  "query",
-                                                               "schema":  {
-                                                                              "type":  "string"
-                                                                          },
-                                                               "required":  false
-                                                           },
-                                          "limit":  {
-                                                        "description":  "The maximum number of results to display per page.",
-                                                        "name":  "limit",
-                                                        "in":  "query",
-                                                        "schema":  {
-                                                                       "type":  "integer",
-                                                                       "format":  "int64"
-                                                                   },
-                                                        "required":  false
-                                                    },
-                                          "properties":  {
-                                                             "description":  "A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.",
-                                                             "name":  "properties",
-                                                             "in":  "query",
-                                                             "schema":  {
-                                                                            "type":  "string"
-                                                                        },
-                                                             "required":  false
-                                                         }
-                                      },
-                       "securitySchemes":  {
-                                               "ApiKeyAuth":  {
-                                                                  "name":  "hapikey",
-                                                                  "in":  "query",
-                                                                  "type":  "apiKey"
-                                                              },
-                                               "OAuth2":  {
-                                                              "flows":  {
-                                                                            "authorizationCode":  {
-                                                                                                      "scopes":  {
-                                                                                                                     "contacts":  "Read and modify contacts",
-                                                                                                                     "oauth":  "Authenticate"
-                                                                                                                 },
-                                                                                                      "authorizationUrl":  "https://api.hubspot.com/oauth/authorize",
-                                                                                                      "tokenUrl":  "https://api.hubspot.com/oauth/v1/token"
-                                                                                                  }
-                                                                        },
-                                                              "type":  "oauth2"
-                                                          }
-                                           },
-                       "schemas":  {
-                                       "ObjectOperationResponse":  {
-                                                                       "properties":  {
-                                                                                          "archived":  {
-                                                                                                           "type":  "boolean"
-                                                                                                       },
-                                                                                          "updatedAt":  {
-                                                                                                            "type":  "string",
-                                                                                                            "format":  "date-time"
-                                                                                                        },
-                                                                                          "id":  {
-                                                                                                     "type":  "integer"
-                                                                                                 },
-                                                                                          "properties":  {
-                                                                                                             "type":  "object",
-                                                                                                             "additionalProperties":  {
-                                                                                                                                          "type":  "string"
-                                                                                                                                      }
-                                                                                                         },
-                                                                                          "createdAt":  {
-                                                                                                            "type":  "string",
-                                                                                                            "format":  "date-time"
-                                                                                                        }
-                                                                                      },
-                                                                       "type":  "object"
-                                                                   },
-                                       "PropertiesObject":  {
-                                                                "properties":  {
-                                                                                   "properties":  {
-                                                                                                      "type":  "object",
-                                                                                                      "additionalProperties":  {
-                                                                                                                                   "properties":  {
-                                                                                                                                                      "key":  {
-                                                                                                                                                                  "type":  "string"
-                                                                                                                                                              },
-                                                                                                                                                      "value":  {
-                                                                                                                                                                    "type":  "string"
-                                                                                                                                                                }
-                                                                                                                                                  },
-                                                                                                                                   "type":  "object"
-                                                                                                                               }
-                                                                                                  }
-                                                                               },
-                                                                "type":  "object"
-                                                            },
-                                       "SearchOrder":  {
-                                                           "items":  {
-                                                                         "properties":  {
-                                                                                            "propertyName":  {
-                                                                                                                 "type":  "string"
-                                                                                                             },
-                                                                                            "direction":  {
-                                                                                                              "type":  "string"
-                                                                                                          }
-                                                                                        },
-                                                                         "type":  "object"
-                                                                     },
-                                                           "type":  "array"
-                                                       },
-                                       "SearchRequest":  {
-                                                             "properties":  {
-                                                                                "filters":  {
-                                                                                                "$ref":  "#/components/schemas/SearchFilters"
-                                                                                            },
-                                                                                "query":  {
-                                                                                              "type":  "string"
-                                                                                          },
-                                                                                "sorts":  {
-                                                                                              "$ref":  "#/components/schemas/SearchOrder"
-                                                                                          },
-                                                                                "filterGroups":  {
-                                                                                                     "$ref":  "#/components/schemas/SearchFilterGroups"
-                                                                                                 },
-                                                                                "limit":  {
-                                                                                              "type":  "integer"
-                                                                                          },
-                                                                                "properties":  {
-                                                                                                   "items":  {
-                                                                                                                 "type":  "string"
-                                                                                                             },
-                                                                                                   "type":  "array"
-                                                                                               },
-                                                                                "after":  {
-                                                                                              "type":  "integer"
-                                                                                          }
-                                                                            },
-                                                             "type":  "object"
-                                                         },
-                                       "ListResponse":  {
-                                                            "properties":  {
-                                                                               "results":  {
-                                                                                               "items":  {
-                                                                                                             "$ref":  "#/components/schemas/CrmObject"
-                                                                                                         },
-                                                                                               "type":  "array"
-                                                                                           },
-                                                                               "paging":  {
-                                                                                              "$ref":  "#/components/schemas/Paging"
-                                                                                          }
-                                                                           },
-                                                            "type":  "object"
-                                                        },
-                                       "SearchFilters":  {
-                                                             "items":  {
-                                                                           "$ref":  "#/components/schemas/SearchFilter"
-                                                                       },
-                                                             "type":  "array"
-                                                         },
-                                       "AssociationList":  {
-                                                               "properties":  {
-                                                                                  "results":  {
-                                                                                                  "items":  {
-                                                                                                                "$ref":  "#/components/schemas/Association"
-                                                                                                            },
-                                                                                                  "type":  "array"
-                                                                                              }
-                                                                              },
-                                                               "type":  "object"
-                                                           },
-                                       "CrmObject":  {
-                                                         "properties":  {
-                                                                            "archived":  {
-                                                                                             "type":  "boolean"
-                                                                                         },
-                                                                            "id":  {
-                                                                                       "type":  "string"
-                                                                                   },
-                                                                            "createdAt":  {
-                                                                                              "type":  "string",
-                                                                                              "format":  "date-time"
-                                                                                          },
-                                                                            "updatedAt":  {
-                                                                                              "type":  "string",
-                                                                                              "format":  "date-time"
-                                                                                          },
-                                                                            "associations":  {
-                                                                                                 "type":  "object",
-                                                                                                 "additionalProperties":  {
-                                                                                                                              "$ref":  "#/components/schemas/AssociationList"
-                                                                                                                          }
-                                                                                             },
-                                                                            "properties":  {
-                                                                                               "type":  "object",
-                                                                                               "additionalProperties":  {
-                                                                                                                            "type":  "string"
-                                                                                                                        }
-                                                                                           }
-                                                                        },
-                                                         "type":  "object"
-                                                     },
-                                       "SearchFilterGroups":  {
-                                                                  "items":  {
-                                                                                "properties":  {
-                                                                                                   "filters":  {
-                                                                                                                   "$ref":  "#/components/schemas/SearchFilters"
-                                                                                                               }
-                                                                                               },
-                                                                                "type":  "object"
-                                                                            },
-                                                                  "type":  "array"
-                                                              },
-                                       "Error":  {
-                                                     "properties":  {
-                                                                        "errors":  {
-                                                                                       "items":  {
-                                                                                                     "properties":  {
-                                                                                                                        "message":  {
-                                                                                                                                        "type":  "string"
-                                                                                                                                    },
-                                                                                                                        "in":  {
-                                                                                                                                   "type":  "string"
-                                                                                                                               },
-                                                                                                                        "code":  {
-                                                                                                                                     "type":  "string"
-                                                                                                                                 },
-                                                                                                                        "links":  {
-                                                                                                                                      "type":  "object",
-                                                                                                                                      "additionalProperties":  true
-                                                                                                                                  },
-                                                                                                                        "subCategory":  {
-                                                                                                                                            "type":  "string"
-                                                                                                                                        },
-                                                                                                                        "context":  {
-                                                                                                                                        "type":  "object",
-                                                                                                                                        "additionalProperties":  true
-                                                                                                                                    }
-                                                                                                                    },
-                                                                                                     "type":  "object"
-                                                                                                 },
-                                                                                       "type":  "array"
-                                                                                   },
-                                                                        "status":  {
-                                                                                       "type":  "string"
-                                                                                   },
-                                                                        "category":  {
-                                                                                         "type":  "string"
-                                                                                     },
-                                                                        "message":  {
-                                                                                        "type":  "string"
-                                                                                    },
-                                                                        "correlationId":  {
-                                                                                              "type":  "string"
-                                                                                          }
-                                                                    },
-                                                     "type":  "object"
-                                                 },
-                                       "Association":  {
-                                                           "properties":  {
-                                                                              "id":  {
-                                                                                         "type":  "string"
-                                                                                     },
-                                                                              "type":  {
-                                                                                           "type":  "string"
-                                                                                       }
-                                                                          },
-                                                           "type":  "object"
-                                                       },
-                                       "Paging":  {
-                                                      "properties":  {
-                                                                         "next":  {
-                                                                                      "properties":  {
-                                                                                                         "link":  {
-                                                                                                                      "type":  "string"
-                                                                                                                  },
-                                                                                                         "after":  {
-                                                                                                                       "type":  "string"
-                                                                                                                   }
-                                                                                                     },
-                                                                                      "type":  "object"
-                                                                                  }
-                                                                     },
-                                                      "type":  "object"
-                                                  },
-                                       "SearchFilter":  {
-                                                            "properties":  {
-                                                                               "operator":  {
-                                                                                                "type":  "string"
-                                                                                            },
-                                                                               "value":  {
-                                                                                             "type":  "string"
-                                                                                         },
-                                                                               "propertyName":  {
-                                                                                                    "type":  "string"
-                                                                                                }
-                                                                           },
-                                                            "type":  "object"
-                                                        }
-                                   }
-                   },
-    "servers":  [
-                    {
-                        "url":  "https://api.hubspot.com"
-                    }
-                ],
-    "paths":  {
-                  "/crm/v3/objects/{objectType}/search":  {
-                                                              "post":  {
-                                                                           "parameters":  [
-                                                                                              {
-                                                                                                  "$ref":  "#/components/parameters/objectType"
-                                                                                              },
-                                                                                              {
-                                                                                                  "$ref":  "#/components/parameters/limit"
-                                                                                              },
-                                                                                              {
-                                                                                                  "$ref":  "#/components/parameters/after"
-                                                                                              }
-                                                                                          ],
-                                                                           "summary":  "Search for objects",
-                                                                           "description":  "Filter, sort, and search CRM objects\n",
-                                                                           "requestBody":  {
-                                                                                               "content":  {
-                                                                                                               "application/json":  {
-                                                                                                                                        "schema":  {
-                                                                                                                                                       "$ref":  "#/components/schemas/SearchRequest"
-                                                                                                                                                   }
-                                                                                                                                    }
-                                                                                                           }
-                                                                                           },
-                                                                           "operationId":  "SearchObjects",
-                                                                           "responses":  {
-                                                                                             "200":  {
-                                                                                                         "content":  {
-                                                                                                                         "application/json":  {
-                                                                                                                                                  "schema":  {
-                                                                                                                                                                 "$ref":  "#/components/schemas/ListResponse"
-                                                                                                                                                             }
-                                                                                                                                              }
-                                                                                                                     },
-                                                                                                         "description":  "Search results"
-                                                                                                     },
-                                                                                             "default":  {
-                                                                                                             "content":  {
-                                                                                                                             "application/json":  {
-                                                                                                                                                      "schema":  {
-                                                                                                                                                                     "$ref":  "#/components/schemas/Error"
-                                                                                                                                                                 }
-                                                                                                                                                  }
-                                                                                                                         },
-                                                                                                             "description":  "API call failed"
-                                                                                                         }
-                                                                                         }
-                                                                       }
-                                                          },
-                  "/crm-associations/v1/associations":  {
-                                                            "put":  {
-                                                                        "operationId":  "AssociateObjectsV1",
-                                                                        "description":  "Associate objects using the V1 API\nhttps://legacydocs.hubspot.com/docs/methods/crm-associations/associate-objects\n",
-                                                                        "summary":  "Associate objects (V1)",
-                                                                        "responses":  {
-                                                                                          "204":  {
-                                                                                                      "description":  "Successful associations"
-                                                                                                  },
-                                                                                          "default":  {
-                                                                                                          "content":  {
-                                                                                                                          "application/json":  {
-                                                                                                                                                   "schema":  {
-                                                                                                                                                                  "$ref":  "#/components/schemas/Error"
-                                                                                                                                                              }
-                                                                                                                                               }
-                                                                                                                      },
-                                                                                                          "description":  "API call failed"
-                                                                                                      }
-                                                                                      },
-                                                                        "requestBody":  {
-                                                                                            "content":  {
-                                                                                                            "application/json":  {
-                                                                                                                                     "schema":  {
-                                                                                                                                                    "properties":  {
-                                                                                                                                                                       "toObjectId":  {
-                                                                                                                                                                                          "type":  "integer"
-                                                                                                                                                                                      },
-                                                                                                                                                                       "fromObjectId":  {
-                                                                                                                                                                                            "type":  "integer"
-                                                                                                                                                                                        },
-                                                                                                                                                                       "definitionId":  {
-                                                                                                                                                                                            "type":  "string"
-                                                                                                                                                                                        },
-                                                                                                                                                                       "category":  {
-                                                                                                                                                                                        "type":  "string"
-                                                                                                                                                                                    }
-                                                                                                                                                                   },
-                                                                                                                                                    "type":  "object"
-                                                                                                                                                }
-                                                                                                                                 }
-                                                                                                        }
-                                                                                        }
-                                                                    }
-                                                        },
-                  "/crm/v3/objects/{objectType}":  {
-                                                       "post":  {
-                                                                    "parameters":  [
-                                                                                       {
-                                                                                           "$ref":  "#/components/parameters/objectType"
-                                                                                       }
-                                                                                   ],
-                                                                    "summary":  "Create an object",
-                                                                    "description":  "Creates an object of the given type",
-                                                                    "requestBody":  {
-                                                                                        "content":  {
-                                                                                                        "application/json":  {
-                                                                                                                                 "schema":  {
-                                                                                                                                                "$ref":  "#/components/schemas/PropertiesObject"
-                                                                                                                                            }
-                                                                                                                             }
-                                                                                                    }
-                                                                                    },
-                                                                    "operationId":  "CreateObject",
-                                                                    "responses":  {
-                                                                                      "200":  {
-                                                                                                  "content":  {
-                                                                                                                  "application/json":  {
-                                                                                                                                           "schema":  {
-                                                                                                                                                          "$ref":  "#/components/schemas/ObjectOperationResponse"
-                                                                                                                                                      }
-                                                                                                                                       }
-                                                                                                              },
-                                                                                                  "description":  "An object with the id and properties of the created object"
-                                                                                              },
-                                                                                      "default":  {
-                                                                                                      "content":  {
-                                                                                                                      "application/json":  {
-                                                                                                                                               "schema":  {
-                                                                                                                                                              "$ref":  "#/components/schemas/Error"
-                                                                                                                                                          }
-                                                                                                                                           }
-                                                                                                                  },
-                                                                                                      "description":  "API call failed"
-                                                                                                  }
-                                                                                  }
-                                                                },
-                                                       "get":  {
-                                                                   "operationId":  "ListObjects",
-                                                                   "description":  "Returns a list of objects",
-                                                                   "summary":  "Get page of objects",
-                                                                   "responses":  {
-                                                                                     "200":  {
-                                                                                                 "content":  {
-                                                                                                                 "application/json":  {
-                                                                                                                                          "schema":  {
-                                                                                                                                                         "$ref":  "#/components/schemas/ListResponse"
-                                                                                                                                                     }
-                                                                                                                                      }
-                                                                                                             },
-                                                                                                 "description":  "An object with a result array of objects and paging instructions"
-                                                                                             },
-                                                                                     "default":  {
-                                                                                                     "content":  {
-                                                                                                                     "application/json":  {
-                                                                                                                                              "schema":  {
-                                                                                                                                                             "$ref":  "#/components/schemas/Error"
-                                                                                                                                                         }
-                                                                                                                                          }
-                                                                                                                 },
-                                                                                                     "description":  "API call failed"
-                                                                                                 }
-                                                                                 },
-                                                                   "parameters":  [
-                                                                                      {
-                                                                                          "$ref":  "#/components/parameters/objectType"
-                                                                                      },
-                                                                                      {
-                                                                                          "$ref":  "#/components/parameters/limit"
-                                                                                      },
-                                                                                      {
-                                                                                          "$ref":  "#/components/parameters/after"
-                                                                                      },
-                                                                                      {
-                                                                                          "$ref":  "#/components/parameters/properties"
-                                                                                      },
-                                                                                      {
-                                                                                          "$ref":  "#/components/parameters/archived"
-                                                                                      }
-                                                                                  ]
-                                                               }
-                                                   },
-                  "/crm/v3/owners":  {
-                                         "get":  {
-                                                     "operationId":  "GetOwners",
-                                                     "description":  "Get a page of owners",
-                                                     "summary":  "Get a page of owners",
-                                                     "responses":  {
-                                                                       "200":  {
-                                                                                   "content":  {
-                                                                                                   "application/json":  {
-                                                                                                                            "schema":  {
-                                                                                                                                           "properties":  {
-                                                                                                                                                              "results":  {
-                                                                                                                                                                              "items":  {
-                                                                                                                                                                                            "properties":  {
-                                                                                                                                                                                                               "archived":  {
-                                                                                                                                                                                                                                "type":  "boolean"
-                                                                                                                                                                                                                            },
-                                                                                                                                                                                                               "id":  {
-                                                                                                                                                                                                                          "type":  "string"
-                                                                                                                                                                                                                      },
-                                                                                                                                                                                                               "createdAt":  {
-                                                                                                                                                                                                                                 "type":  "string"
-                                                                                                                                                                                                                             },
-                                                                                                                                                                                                               "firstName":  {
-                                                                                                                                                                                                                                 "type":  "string"
-                                                                                                                                                                                                                             },
-                                                                                                                                                                                                               "lastName":  {
-                                                                                                                                                                                                                                "type":  "string"
-                                                                                                                                                                                                                            },
-                                                                                                                                                                                                               "teams":  {
-                                                                                                                                                                                                                             "items":  {
-                                                                                                                                                                                                                                           "properties":  {
-                                                                                                                                                                                                                                                              "id":  {
-                                                                                                                                                                                                                                                                         "type":  "string"
-                                                                                                                                                                                                                                                                     },
-                                                                                                                                                                                                                                                              "name":  {
-                                                                                                                                                                                                                                                                           "type":  "string"
-                                                                                                                                                                                                                                                                       }
-                                                                                                                                                                                                                                                          },
-                                                                                                                                                                                                                                           "type":  "object"
-                                                                                                                                                                                                                                       },
-                                                                                                                                                                                                                             "type":  "array"
-                                                                                                                                                                                                                         },
-                                                                                                                                                                                                               "updatedAt":  {
-                                                                                                                                                                                                                                 "type":  "string"
-                                                                                                                                                                                                                             },
-                                                                                                                                                                                                               "userId":  {
-                                                                                                                                                                                                                              "type":  "integer"
-                                                                                                                                                                                                                          },
-                                                                                                                                                                                                               "email":  {
-                                                                                                                                                                                                                             "type":  "string"
-                                                                                                                                                                                                                         }
-                                                                                                                                                                                                           },
-                                                                                                                                                                                            "type":  "object"
-                                                                                                                                                                                        },
-                                                                                                                                                                              "type":  "array"
-                                                                                                                                                                          },
-                                                                                                                                                              "paging":  {
-                                                                                                                                                                             "$ref":  "#/components/schemas/Paging"
-                                                                                                                                                                         }
-                                                                                                                                                          },
-                                                                                                                                           "type":  "object"
-                                                                                                                                       }
-                                                                                                                        }
-                                                                                               },
-                                                                                   "description":  "Page of owners"
-                                                                               }
-                                                                   },
-                                                     "parameters":  [
-                                                                        {
-                                                                            "description":  "Filter by email address",
-                                                                            "name":  "email",
-                                                                            "in":  "query",
-                                                                            "schema":  {
-                                                                                           "type":  "string"
-                                                                                       },
-                                                                            "required":  false
-                                                                        },
-                                                                        {
-                                                                            "$ref":  "#/components/parameters/limit"
-                                                                        },
-                                                                        {
-                                                                            "$ref":  "#/components/parameters/after"
-                                                                        }
-                                                                    ]
-                                                 }
-                                     },
-                  "/crm/v3/objects/{objectType}/{objectId}":  {
-                                                                  "patch":  {
-                                                                                "parameters":  [
-                                                                                                   {
-                                                                                                       "$ref":  "#/components/parameters/objectType"
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "$ref":  "#/components/parameters/objectId"
-                                                                                                   }
-                                                                                               ],
-                                                                                "summary":  "Updates an object",
-                                                                                "description":  "Updates the object of the given type and the given id",
-                                                                                "requestBody":  {
-                                                                                                    "content":  {
-                                                                                                                    "application/json":  {
-                                                                                                                                             "schema":  {
-                                                                                                                                                            "$ref":  "#/components/schemas/PropertiesObject"
-                                                                                                                                                        }
-                                                                                                                                         }
-                                                                                                                }
-                                                                                                },
-                                                                                "operationId":  "UpdateObject",
-                                                                                "responses":  {
-                                                                                                  "200":  {
-                                                                                                              "content":  {
-                                                                                                                              "application/json":  {
-                                                                                                                                                       "schema":  {
-                                                                                                                                                                      "$ref":  "#/components/schemas/ObjectOperationResponse"
-                                                                                                                                                                  }
-                                                                                                                                                   }
-                                                                                                                          },
-                                                                                                              "description":  "An object with the id and properties of the created object"
-                                                                                                          },
-                                                                                                  "default":  {
-                                                                                                                  "content":  {
-                                                                                                                                  "application/json":  {
-                                                                                                                                                           "schema":  {
-                                                                                                                                                                          "$ref":  "#/components/schemas/Error"
-                                                                                                                                                                      }
-                                                                                                                                                       }
-                                                                                                                              },
-                                                                                                                  "description":  "API call failed"
-                                                                                                              }
-                                                                                              }
-                                                                            },
-                                                                  "get":  {
-                                                                              "operationId":  "GetObject",
-                                                                              "description":  "Read an Object identified by {objectId}. {objectId} refers\nto the internal object ID by default, or optionally any unique property\nvalue as specified by the idProperty query param.\nControl what is returned via the properties query param.\n",
-                                                                              "summary":  "Read an object",
-                                                                              "responses":  {
-                                                                                                "200":  {
-                                                                                                            "content":  {
-                                                                                                                            "application/json":  {
-                                                                                                                                                     "schema":  {
-                                                                                                                                                                    "$ref":  "#/components/schemas/CrmObject"
-                                                                                                                                                                }
-                                                                                                                                                 }
-                                                                                                                        },
-                                                                                                            "description":  "A company"
-                                                                                                        },
-                                                                                                "default":  {
-                                                                                                                "content":  {
-                                                                                                                                "application/json":  {
-                                                                                                                                                         "schema":  {
-                                                                                                                                                                        "$ref":  "#/components/schemas/Error"
-                                                                                                                                                                    }
-                                                                                                                                                     }
-                                                                                                                            },
-                                                                                                                "description":  "API call failed"
-                                                                                                            }
-                                                                                            },
-                                                                              "parameters":  [
-                                                                                                 {
-                                                                                                     "$ref":  "#/components/parameters/objectType"
-                                                                                                 },
-                                                                                                 {
-                                                                                                     "$ref":  "#/components/parameters/objectId"
-                                                                                                 },
-                                                                                                 {
-                                                                                                     "$ref":  "#/components/parameters/properties"
-                                                                                                 },
-                                                                                                 {
-                                                                                                     "$ref":  "#/components/parameters/associations"
-                                                                                                 },
-                                                                                                 {
-                                                                                                     "$ref":  "#/components/parameters/archived"
-                                                                                                 },
-                                                                                                 {
-                                                                                                     "$ref":  "#/components/parameters/idProperty"
-                                                                                                 }
-                                                                                             ]
-                                                                          }
-                                                              }
+  "security": [
+    {
+      "ApiKeyAuth": []
+    },
+    {
+      "OAuth2": [
+        "oauth",
+        "contacts"
+      ]
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://api.hubspot.com"
+    }
+  ],
+  "paths": {
+    "/crm/v3/objects/{objectType}": {
+      "post": {
+        "operationId": "CreateObject",
+        "responses": {
+          "200": {
+            "description": "An object with the id and properties of the created object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOperationResponse"
+                }
               }
+            }
+          },
+          "default": {
+            "description": "API call failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PropertiesObject"
+              }
+            }
+          }
+        },
+        "summary": "Create an object",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/objectType"
+          }
+        ],
+        "description": "Creates an object of the given type"
+      },
+      "get": {
+        "summary": "Get page of objects",
+        "operationId": "ListObjects",
+        "description": "Returns a list of objects",
+        "responses": {
+          "200": {
+            "description": "An object with a result array of objects and paging instructions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "API call failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/objectType"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/after"
+          },
+          {
+            "$ref": "#/components/parameters/properties"
+          },
+          {
+            "$ref": "#/components/parameters/archived"
+          }
+        ]
+      }
+    },
+    "/crm/v3/objects/{objectType}/search": {
+      "post": {
+        "operationId": "SearchObjects",
+        "responses": {
+          "200": {
+            "description": "Search results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "API call failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          }
+        },
+        "summary": "Search for objects",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/objectType"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/after"
+          }
+        ],
+        "description": "Filter, sort, and search CRM objects\n"
+      }
+    },
+    "/crm/v3/owners": {
+      "get": {
+        "summary": "Get a page of owners",
+        "operationId": "GetOwners",
+        "description": "Get a page of owners",
+        "responses": {
+          "200": {
+            "description": "Page of owners",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "paging": {
+                      "$ref": "#/components/schemas/Paging"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "userId": {
+                            "type": "integer"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "archived": {
+                            "type": "boolean"
+                          },
+                          "lastName": {
+                            "type": "string"
+                          },
+                          "updatedAt": {
+                            "type": "string"
+                          },
+                          "firstName": {
+                            "type": "string"
+                          },
+                          "teams": {
+                            "type": "array",
+                            "items": {
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            }
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "description": "Filter by email address",
+            "name": "email",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "in": "query"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/after"
+          }
+        ]
+      }
+    },
+    "/crm/v3/objects/{objectType}/{objectId}": {
+      "patch": {
+        "operationId": "UpdateObject",
+        "responses": {
+          "200": {
+            "description": "An object with the id and properties of the created object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOperationResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "API call failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PropertiesObject"
+              }
+            }
+          }
+        },
+        "summary": "Updates an object",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/objectType"
+          },
+          {
+            "$ref": "#/components/parameters/objectId"
+          }
+        ],
+        "description": "Updates the object of the given type and the given id"
+      },
+      "get": {
+        "summary": "Read an object",
+        "operationId": "GetObject",
+        "description": "Read an Object identified by {objectId}. {objectId} refers\nto the internal object ID by default, or optionally any unique property\nvalue as specified by the idProperty query param.\nControl what is returned via the properties query param.\n",
+        "responses": {
+          "200": {
+            "description": "A company",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrmObject"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "API call failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/objectType"
+          },
+          {
+            "$ref": "#/components/parameters/objectId"
+          },
+          {
+            "$ref": "#/components/parameters/properties"
+          },
+          {
+            "$ref": "#/components/parameters/associations"
+          },
+          {
+            "$ref": "#/components/parameters/archived"
+          },
+          {
+            "$ref": "#/components/parameters/idProperty"
+          }
+        ]
+      }
+    },
+    "/crm-associations/v1/associations": {
+      "put": {
+        "responses": {
+          "204": {
+            "description": "Successful associations"
+          },
+          "default": {
+            "description": "API call failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Associate objects (V1)",
+        "operationId": "AssociateObjectsV1",
+        "description": "Associate objects using the V1 API\nhttps://legacydocs.hubspot.com/docs/methods/crm-associations/associate-objects\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "category": {
+                    "type": "string"
+                  },
+                  "fromObjectId": {
+                    "type": "integer"
+                  },
+                  "toObjectId": {
+                    "type": "integer"
+                  },
+                  "definitionId": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "openapi": "3.0.0",
+  "components": {
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "scopes": {
+              "contacts": "Read and modify contacts",
+              "oauth": "Authenticate"
+            },
+            "tokenUrl": "https://api.hubspot.com/oauth/v1/token",
+            "authorizationUrl": "https://api.hubspot.com/oauth/authorize"
+          }
+        }
+      },
+      "ApiKeyAuth": {
+        "name": "hapikey",
+        "in": "query",
+        "type": "apiKey"
+      }
+    },
+    "schemas": {
+      "SearchRequest": {
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "filters": {
+            "$ref": "#/components/schemas/SearchFilters"
+          },
+          "filterGroups": {
+            "$ref": "#/components/schemas/SearchFilterGroups"
+          },
+          "after": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "sorts": {
+            "$ref": "#/components/schemas/SearchOrder"
+          },
+          "properties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "type": "object"
+      },
+      "Error": {
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "links": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "context": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "subCategory": {
+                  "type": "string"
+                },
+                "in": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ObjectOperationResponse": {
+        "properties": {
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "properties": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "archived": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ListResponse": {
+        "properties": {
+          "paging": {
+            "$ref": "#/components/schemas/Paging"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CrmObject"
+            }
+          }
+        },
+        "type": "object"
+      },
+      "CrmObject": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "archived": {
+            "type": "boolean"
+          },
+          "associations": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/AssociationList"
+            },
+            "type": "object"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "properties": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "Association": {
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Paging": {
+        "properties": {
+          "next": {
+            "properties": {
+              "link": {
+                "type": "string"
+              },
+              "after": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "PropertiesObject": {
+        "properties": {
+          "properties": {
+            "additionalProperties": {
+              "properties": {
+                "value": {
+                  "type": "string"
+                },
+                "key": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "SearchFilters": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SearchFilter"
+        }
+      },
+      "SearchOrder": {
+        "type": "array",
+        "items": {
+          "properties": {
+            "direction": {
+              "type": "string"
+            },
+            "propertyName": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "SearchFilter": {
+        "properties": {
+          "propertyName": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "operator": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "SearchFilterGroups": {
+        "type": "array",
+        "items": {
+          "properties": {
+            "filters": {
+              "$ref": "#/components/schemas/SearchFilters"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "AssociationList": {
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Association"
+            }
+          }
+        },
+        "type": "object"
+      }
+    },
+    "parameters": {
+      "objectId": {
+        "required": true,
+        "name": "objectId",
+        "schema": {
+          "type": "string"
+        },
+        "in": "path"
+      },
+      "archived": {
+        "description": "Whether to return only results that have been archived.",
+        "name": "archived",
+        "required": false,
+        "schema": {
+          "type": "boolean"
+        },
+        "in": "query"
+      },
+      "objectType": {
+        "description": "The object type to work with",
+        "name": "objectType",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "in": "path"
+      },
+      "after": {
+        "description": "The paging cursor token of the last successfully read resource will be returned as the paging.next.after JSON property of a paged response containing more results.",
+        "name": "after",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "in": "query"
+      },
+      "limit": {
+        "description": "The maximum number of results to display per page.",
+        "name": "limit",
+        "required": false,
+        "schema": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "in": "query"
+      },
+      "idProperty": {
+        "description": "The name of a property whose values are unique for this object type",
+        "name": "idProperty",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "in": "query"
+      },
+      "associations": {
+        "description": "A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.",
+        "name": "associations",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "in": "query"
+      },
+      "properties": {
+        "description": "A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.",
+        "name": "properties",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "in": "query"
+      }
+    }
+  },
+  "info": {
+    "title": "HubSpot API",
+    "version": "3.0.0"
+  }
 }
